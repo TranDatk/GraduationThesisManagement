@@ -1,7 +1,8 @@
 # Thesis Management System using Spring Framework
 
 
-![Class Diagram0](https://github.com/TranDatk/GraduationThesisManagement/assets/84312661/e4722475-a305-4f73-b5cd-b41bba44c123)
+![Class Diagram0](https://github.com/TranDatk/GraduationThesisManagement/assets/84312661/2618236c-4a83-4624-bc1b-e954678e284e)
+
 
 ##
 
