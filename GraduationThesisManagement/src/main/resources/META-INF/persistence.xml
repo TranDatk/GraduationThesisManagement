@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.nhom39_GraduationThesisManagement_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.nhom39.pojo.Council</class>
+    <class>com.nhom39.pojo.Department</class>
+    <class>com.nhom39.pojo.Guide</class>
+    <class>com.nhom39.pojo.Lecturer</class>
+    <class>com.nhom39.pojo.NotificationUser</class>
+    <class>com.nhom39.pojo.News</class>
+    <class>com.nhom39.pojo.Role</class>
+    <class>com.nhom39.pojo.CouncilDetail</class>
+    <class>com.nhom39.pojo.Position</class>
+    <class>com.nhom39.pojo.AcademicAffairs</class>
+    <class>com.nhom39.pojo.Score</class>
+    <class>com.nhom39.pojo.Notification</class>
+    <class>com.nhom39.pojo.ScoreDetail</class>
+    <class>com.nhom39.pojo.ScoreColumn</class>
+    <class>com.nhom39.pojo.User</class>
+    <class>com.nhom39.pojo.Student</class>
+    <class>com.nhom39.pojo.Major</class>
+    <class>com.nhom39.pojo.Thesis</class>
+    <class>com.nhom39.pojo.Topic</class>
+    <class>com.nhom39.pojo.SchoolYear</class>
+    <class>com.nhom39.pojo.ThesisRegistration</class>
+    <class>com.nhom39.pojo.ScoreComponent</class>
+    <class>com.nhom39.pojo.EvaluationMethod</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/thesismanagement?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="25052002"/>
+    </properties>
+  </persistence-unit>
+</persistence>
