@@ -4,26 +4,18 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "score")
@@ -41,12 +33,15 @@ public class Score implements Serializable {
     private Integer id;
     @JoinColumn(name = "council_detail_id", referencedColumnName = "id")
     @ManyToOne
-    private CouncilDetail councilDetailId;
+    @JsonIncludeProperties({"id"})
+    private CouncilDetail councilDetail;
     @JoinColumn(name = "thesis_id", referencedColumnName = "id")
     @ManyToOne
-    private Thesis thesisId;
-    @OneToMany(mappedBy = "scoreId")
-    private Set<ScoreDetail> scoreDetailSet;
+    @JsonIncludeProperties({"id"})
+    private Thesis thesis;
+    @OneToMany(mappedBy = "score", fetch = FetchType.EAGER)
+    @Valid
+    private List<ScoreDetail> scoreDetails;
 
     public Score() {
     }
@@ -63,29 +58,29 @@ public class Score implements Serializable {
         this.id = id;
     }
 
-    public CouncilDetail getCouncilDetailId() {
-        return councilDetailId;
+    public CouncilDetail getCouncilDetail() {
+        return councilDetail;
     }
 
-    public void setCouncilDetailId(CouncilDetail councilDetailId) {
-        this.councilDetailId = councilDetailId;
+    public void setCouncilDetail(CouncilDetail councilDetailId) {
+        this.councilDetail = councilDetailId;
     }
 
-    public Thesis getThesisId() {
-        return thesisId;
+    public Thesis getThesis() {
+        return thesis;
     }
 
-    public void setThesisId(Thesis thesisId) {
-        this.thesisId = thesisId;
+    public void setThesis(Thesis thesisId) {
+        this.thesis = thesisId;
     }
 
     @XmlTransient
-    public Set<ScoreDetail> getScoreDetailSet() {
-        return scoreDetailSet;
+    public List<ScoreDetail> getScoreDetails() {
+        return scoreDetails;
     }
 
-    public void setScoreDetailSet(Set<ScoreDetail> scoreDetailSet) {
-        this.scoreDetailSet = scoreDetailSet;
+    public void setScoreDetails(List<ScoreDetail> scoreDetailSet) {
+        this.scoreDetails = scoreDetailSet;
     }
 
     @Override
@@ -110,7 +105,7 @@ public class Score implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Score[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Score[ id=" + id + " ]";
     }
     
 }

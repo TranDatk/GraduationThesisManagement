@@ -4,22 +4,13 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "notification")
@@ -36,8 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n"),
     @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id"),
     @NamedQuery(name = "Notification.findByTitle", query = "SELECT n FROM Notification n WHERE n.title = :title"),
-    @NamedQuery(name = "Notification.findByContent", query = "SELECT n FROM Notification n WHERE n.content = :content"),
-    @NamedQuery(name = "Notification.findByCreatedDate", query = "SELECT n FROM Notification n WHERE n.createdDate = :createdDate")})
+    @NamedQuery(name = "Notification.findByContent", query = "SELECT n FROM Notification n WHERE n.content = :content")})
 public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,20 +37,28 @@ public class Notification implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotNull(message = "{notification.add.title.notNullMessage}")
+    @NotEmpty(message = "{notification.add.title.notNullMessage}")
+    @Size(max = 100, message = "{notification.add.title.sizeMessage}")
     @Column(name = "title")
     private String title;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotNull(message = "{notification.add.content.notNullMessage}")
+    @NotEmpty(message = "{notification.add.content.notNullMessage}")
+    @Size(max = 255, message = "{notification.add.content.sizeMessage}")
     @Column(name = "content")
     private String content;
     @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notificationId")
-    private Set<NotificationUser> notificationUserSet;
+    private Timestamp createdDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notification")
+    @JsonIgnore
+    private Set<NotificationUser> notificationUsers;
+    @Transient
+    private Integer [] usersId;
+
+    {
+        this.createdDate = new Timestamp(System.currentTimeMillis());
+    }
 
     public Notification() {
     }
@@ -98,22 +96,21 @@ public class Notification implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+    @XmlTransient
+    public Set<NotificationUser> getNotificationUsers() {
+        return notificationUsers;
+    }
 
-    public Date getCreatedDate() {
+    public void setNotificationUsers(Set<NotificationUser> notificationUserSet) {
+        this.notificationUsers = notificationUserSet;
+    }
+
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-    }
-
-    @XmlTransient
-    public Set<NotificationUser> getNotificationUserSet() {
-        return notificationUserSet;
-    }
-
-    public void setNotificationUserSet(Set<NotificationUser> notificationUserSet) {
-        this.notificationUserSet = notificationUserSet;
     }
 
     @Override
@@ -136,9 +133,17 @@ public class Notification implements Serializable {
         return true;
     }
 
+    public Integer[] getUsersId() {
+        return usersId;
+    }
+
+    public void setUsersId(Integer[] usersId) {
+        this.usersId = usersId;
+    }
+
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Notification[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Notification[ id=" + id + " ]";
     }
     
 }

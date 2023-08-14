@@ -4,6 +4,8 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,20 +18,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "score_detail")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ScoreDetail.findAll", query = "SELECT s FROM ScoreDetail s"),
-    @NamedQuery(name = "ScoreDetail.findById", query = "SELECT s FROM ScoreDetail s WHERE s.id = :id"),
-    @NamedQuery(name = "ScoreDetail.findByScore", query = "SELECT s FROM ScoreDetail s WHERE s.score = :score")})
+    @NamedQuery(name = "ScoreDetail.findById", query = "SELECT s FROM ScoreDetail s WHERE s.id = :id")})
 public class ScoreDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,15 +40,18 @@ public class ScoreDetail implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{score.add.scoreNum.notNullMessage}")
+    @DecimalMin(value = "0", message = "{score.add.scoreNum.sizeMessage}")
+    @DecimalMax(value = "10", message = "{score.add.scoreNum.sizeMessage}")
     @Column(name = "score")
-    private double score;
+    private Double scoreNum;
     @JoinColumn(name = "score_id", referencedColumnName = "id")
     @ManyToOne
-    private Score scoreId;
+    @JsonIgnore
+    private Score score;
     @JoinColumn(name = "score_column_id", referencedColumnName = "id")
     @ManyToOne
-    private ScoreColumn scoreColumnId;
+    private ScoreColumn scoreColumn;
 
     public ScoreDetail() {
     }
@@ -56,9 +60,9 @@ public class ScoreDetail implements Serializable {
         this.id = id;
     }
 
-    public ScoreDetail(Integer id, double score) {
+    public ScoreDetail(Integer id, double scoreNum) {
         this.id = id;
-        this.score = score;
+        this.scoreNum = scoreNum;
     }
 
     public Integer getId() {
@@ -69,28 +73,28 @@ public class ScoreDetail implements Serializable {
         this.id = id;
     }
 
-    public double getScore() {
+    public Double getScoreNum() {
+        return scoreNum;
+    }
+
+    public void setScoreNum(Double score) {
+        this.scoreNum = score;
+    }
+
+    public Score getScore() {
         return score;
     }
 
-    public void setScore(double score) {
-        this.score = score;
+    public void setScore(Score scoreId) {
+        this.score = scoreId;
     }
 
-    public Score getScoreId() {
-        return scoreId;
+    public ScoreColumn getScoreColumn() {
+        return scoreColumn;
     }
 
-    public void setScoreId(Score scoreId) {
-        this.scoreId = scoreId;
-    }
-
-    public ScoreColumn getScoreColumnId() {
-        return scoreColumnId;
-    }
-
-    public void setScoreColumnId(ScoreColumn scoreColumnId) {
-        this.scoreColumnId = scoreColumnId;
+    public void setScoreColumn(ScoreColumn scoreColumnId) {
+        this.scoreColumn = scoreColumnId;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class ScoreDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.ScoreDetail[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.ScoreDetail[ id=" + id + " ]";
     }
     
 }

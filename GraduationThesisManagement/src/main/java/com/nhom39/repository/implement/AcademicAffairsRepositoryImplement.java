@@ -1,9 +1,9 @@
 package com.nhom39.repository.implement;
 
 import com.nhom39.constants.SystemConstant;
-import com.nhom39.pojo.Manage;
+import com.nhom39.pojo.AcademicAffairs;
 import com.nhom39.pojo.User;
-import com.nhom39.repository.ManageRepository;
+import com.nhom39.repository.AcademicAffairsRepository;
 import com.nhom39.repository.RoleRepository;
 import com.nhom39.repository.UserRepository;
 import org.hibernate.Session;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Repository
 @Transactional
-public class ManageRepositoryImplement implements ManageRepository {
+public class AcademicAffairsRepositoryImplement implements AcademicAffairsRepository {
     @Autowired
     private LocalSessionFactoryBean sessionFactoryBean;
     @Autowired
@@ -33,7 +33,7 @@ public class ManageRepositoryImplement implements ManageRepository {
     private RoleRepository roleRepository;
 
     @Override
-    public boolean checkUniqueManageEmail(String manageEmail) {
+    public boolean checkUniqueAcademicAffairsEmail(String manageEmail) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
 
         String sql = "SELECT COUNT(id) FROM Manage WHERE email=:email";
@@ -44,7 +44,7 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public boolean checkUniqueManagePhone(String managePhone) {
+    public boolean checkUniqueAcademicAffairsPhone(String managePhone) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
 
         String sql = "SELECT COUNT(id) FROM Manage WHERE phone=:phone";
@@ -55,11 +55,11 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public List<Manage> getManages(Map<String, String> params) {
+    public List<AcademicAffairs> getAcademicAffairs(Map<String, String> params) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Manage> query = builder.createQuery(Manage.class);
-        Root<Manage> manageRoot = query.from(Manage.class);
+        CriteriaQuery<AcademicAffairs> query = builder.createQuery(AcademicAffairs.class);
+        Root<AcademicAffairs> manageRoot = query.from(AcademicAffairs.class);
         Root<User> userRoot = query.from(User.class);
         query.select(manageRoot);
 
@@ -100,11 +100,11 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public long countManage(Map<String, String> params) {
+    public long countAcademicAffairs(Map<String, String> params) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
-        Root<Manage> manageRoot = query.from(Manage.class);
+        Root<AcademicAffairs> manageRoot = query.from(AcademicAffairs.class);
         Root<User> userRoot = query.from(User.class);
         query.multiselect(builder.count(manageRoot.get("id")));
 
@@ -137,7 +137,7 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public boolean addManage(Manage manage) {
+    public boolean addAcademicAffairs(AcademicAffairs manage) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
         try {
             User user = manage.getUser();
@@ -155,12 +155,12 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public Manage getManageById(int manageId) {
+    public AcademicAffairs getAcademicAffairsById(int manageId) {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
         try {
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Manage> query = builder.createQuery(Manage.class);
-            Root<Manage> root = query.from(Manage.class);
+            CriteriaQuery<AcademicAffairs> query = builder.createQuery(AcademicAffairs.class);
+            Root<AcademicAffairs> root = query.from(AcademicAffairs.class);
             query.select(root);
             query.where(builder.equal(root.get("id").as(Integer.class), manageId));
             return session.createQuery(query).getSingleResult();
@@ -171,10 +171,10 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public boolean updateManage(int manageId, Manage manage) {
+    public boolean updateAcademicAffairs(int manageId, AcademicAffairs manage) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         try {
-            Manage objManage = session.get(Manage.class, manageId);
+            AcademicAffairs objManage = session.get(AcademicAffairs.class, manageId);
             objManage.setFullName(manage.getFullName());
             objManage.setEmail(manage.getEmail());
             objManage.setPhone(manage.getPhone());
@@ -195,10 +195,10 @@ public class ManageRepositoryImplement implements ManageRepository {
     }
 
     @Override
-    public boolean deleteManage(int manageId) {
+    public boolean deleteAcademicAffairs(int manageId) {
         Session session = sessionFactoryBean.getObject().getCurrentSession();
         try {
-            Manage objManage = session.get(Manage.class, manageId);
+            AcademicAffairs objManage = session.get(AcademicAffairs.class, manageId);
             User objUser = session.get(User.class, objManage.getUser().getId());
 
             session.delete(objManage);

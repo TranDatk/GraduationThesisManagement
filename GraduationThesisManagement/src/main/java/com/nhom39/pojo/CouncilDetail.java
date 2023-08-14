@@ -4,6 +4,9 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -18,21 +21,23 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "council_detail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CouncilDetail.findAll", query = "SELECT c FROM CouncilDetail c"),
-    @NamedQuery(name = "CouncilDetail.findById", query = "SELECT c FROM CouncilDetail c WHERE c.id = :id"),
-    @NamedQuery(name = "CouncilDetail.findByPosition", query = "SELECT c FROM CouncilDetail c WHERE c.position = :position")})
+        @NamedQuery(name = "CouncilDetail.findAll", query = "SELECT c FROM CouncilDetail c"),
+        @NamedQuery(name = "CouncilDetail.findById", query = "SELECT c FROM CouncilDetail c WHERE c.id = :id"),
+        @NamedQuery(name = "CouncilDetail.findByPosition", query = "SELECT c FROM CouncilDetail c WHERE c.position = :position")})
 public class CouncilDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,23 +46,35 @@ public class CouncilDetail implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull(message = "{councilDetail.add.position.notNullMessage}")
+    @NotEmpty(message = "{councilDetail.add.position.notNullMessage}")
+    @Size(max = 45, message = "{councilDetail.add.position.sizeMessage}")
     @Column(name = "position")
     private String position;
-    @OneToMany(mappedBy = "councilDetailId")
-    private Set<Score> scoreSet;
+    @OneToMany(mappedBy = "councilDetail")
+    @JsonIgnore
+    private Set<Score> scores;
     @JoinColumn(name = "council_id", referencedColumnName = "id")
-    @ManyToOne
-    private Council councilId;
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Lecturer lecturerId;
+    @JsonIncludeProperties({"id", "name"})
+    private Council council;
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+    @NotNull(message = "{councilDetail.add.lecturer.notNullMessage}")
+    @ManyToOne(optional = false)
+    @JsonIncludeProperties({"id", "code", "fullName"})
+    private Lecturer lecturer;
 
     public CouncilDetail() {
     }
 
     public CouncilDetail(Integer id) {
         this.id = id;
+    }
+
+    public CouncilDetail(Integer id, String position) {
+        this.id = id;
+        this.position = position;
     }
 
     public Integer getId() {
@@ -77,28 +94,28 @@ public class CouncilDetail implements Serializable {
     }
 
     @XmlTransient
-    public Set<Score> getScoreSet() {
-        return scoreSet;
+    public Set<Score> getScores() {
+        return scores;
     }
 
-    public void setScoreSet(Set<Score> scoreSet) {
-        this.scoreSet = scoreSet;
+    public void setScores(Set<Score> scoreSet) {
+        this.scores = scoreSet;
     }
 
-    public Council getCouncilId() {
-        return councilId;
+    public Council getCouncil() {
+        return council;
     }
 
-    public void setCouncilId(Council councilId) {
-        this.councilId = councilId;
+    public void setCouncil(Council council) {
+        this.council = council;
     }
 
-    public Lecturer getLecturerId() {
-        return lecturerId;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setLecturerId(Lecturer lecturerId) {
-        this.lecturerId = lecturerId;
+    public void setLecturer(Lecturer lecturerId) {
+        this.lecturer = lecturerId;
     }
 
     @Override
@@ -123,7 +140,7 @@ public class CouncilDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.CouncilDetail[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.CouncilDetail[ id=" + id + " ]";
     }
-    
+
 }

@@ -4,8 +4,11 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,15 +21,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "news")
@@ -34,8 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "News.findAll", query = "SELECT n FROM News n"),
     @NamedQuery(name = "News.findById", query = "SELECT n FROM News n WHERE n.id = :id"),
-    @NamedQuery(name = "News.findByTitle", query = "SELECT n FROM News n WHERE n.title = :title"),
-    @NamedQuery(name = "News.findByCreatedDate", query = "SELECT n FROM News n WHERE n.createdDate = :createdDate")})
+    @NamedQuery(name = "News.findByTitle", query = "SELECT n FROM News n WHERE n.title = :title")})
 public class News implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,22 +46,28 @@ public class News implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{news.add.title.notNullMessage}")
+    @NotNull(message = "{news.add.title.notNullMessage}")
+    @Size(max = 255, message = "{news.add.title.sizeMessage}")
     @Column(name = "title")
     private String title;
     @Basic(optional = false)
-    @NotNull
+    @NotEmpty(message = "{news.add.content.notNullMessage}")
+    @NotNull(message = "{news.add.content.notNullMessage}")
     @Lob
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 2147483647, message = "{news.add.content.sizeMessage}")
     @Column(name = "content")
     private String content;
     @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Timestamp createdDate;
+    @JsonIgnoreProperties({"password", "active", "role", "manage", "lecturer", "notificationUsers", "student", "news"})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
-    private User userId;
+    private User user;
+
+    {
+        this.createdDate = new Timestamp(System.currentTimeMillis());
+    }
 
     public News() {
     }
@@ -99,20 +106,20 @@ public class News implements Serializable {
         this.content = content;
     }
 
-    public Date getCreatedDate() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User userId) {
+        this.user = userId;
+    }
+
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
     }
 
     @Override
@@ -137,7 +144,7 @@ public class News implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.News[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.News[ id=" + id + " ]";
     }
     
 }

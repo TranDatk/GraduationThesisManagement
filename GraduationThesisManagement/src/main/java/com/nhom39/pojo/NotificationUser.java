@@ -4,6 +4,9 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,16 +22,12 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "notification_user")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "NotificationUser.findAll", query = "SELECT n FROM NotificationUser n"),
-    @NamedQuery(name = "NotificationUser.findById", query = "SELECT n FROM NotificationUser n WHERE n.id = :id"),
-    @NamedQuery(name = "NotificationUser.findByActive", query = "SELECT n FROM NotificationUser n WHERE n.active = :active")})
+@NamedQueries({@NamedQuery(name = "NotificationUser.findAll", query = "SELECT n FROM NotificationUser n"), @NamedQuery(name = "NotificationUser.findById", query = "SELECT n FROM NotificationUser n WHERE n.id = :id")})
 public class NotificationUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,14 +36,21 @@ public class NotificationUser implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
+    @Basic(optional = false)
     @Column(name = "active")
-    private Boolean active;
+    private boolean active;
     @JoinColumn(name = "notification_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Notification notificationId;
+    private Notification notification;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private User userId;
+    @JsonIgnore
+    private User user;
+
+    {
+        this.active = true;
+    }
 
     public NotificationUser() {
     }
@@ -61,28 +67,28 @@ public class NotificationUser implements Serializable {
         this.id = id;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    public Notification getNotificationId() {
-        return notificationId;
+    public Notification getNotification() {
+        return notification;
     }
 
-    public void setNotificationId(Notification notificationId) {
-        this.notificationId = notificationId;
+    public void setNotification(Notification notificationId) {
+        this.notification = notificationId;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User userId) {
+        this.user = userId;
     }
 
     @Override
@@ -107,7 +113,7 @@ public class NotificationUser implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.NotificationUser[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.NotificationUser[ id=" + id + " ]";
     }
-    
+
 }

@@ -4,41 +4,32 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
-    @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+        @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+        @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
+        @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,35 +39,50 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @NotEmpty(message = "{user.add.username.notNullMessage}")
+    @NotNull(message = "{user.add.username.notNullMessage}")
+    @Size(max = 45, message = "{user.add.username.sizeMessage}")
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{user.add.password.notNullMessage}")
+    @NotNull(message = "{user.add.password.notNullMessage}")
+    @Size(max = 255, message = "{user.add.password.sizeMessage}")
     @Column(name = "password")
     private String password;
+    @Transient
+    private String newPassword;
+    @Basic(optional = false)
     @Size(max = 350)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "avatar")
     private String avatar;
+
+    @Transient
+    private MultipartFile avatarFile;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "active")
-    private boolean active;
-    @OneToMany(mappedBy = "userId")
-    private Set<News> newsSet;
-    @OneToOne(mappedBy = "userId")
+    private Boolean active;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<News> news;
+    @OneToOne(mappedBy = "user")
     private Student student;
-    @OneToOne(mappedBy = "userId")
+    @OneToOne(mappedBy = "user")
     private Lecturer lecturer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Set<NotificationUser> notificationUserSet;
-    @OneToOne(mappedBy = "userId")
-    private AcademicAffairs academicAffairs;
+    @OneToOne(mappedBy = "user")
+    private AcademicAffairs manage;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
+    private Set<NotificationUser> notificationUsers;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne
-    private Role roleId;
+    private Role role;
+
+
+    {
+        this.active=true;
+    }
 
     public User() {
     }
@@ -85,10 +91,11 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String username, String password, boolean active) {
+    public User(Integer id, String username, String password, String avatar, boolean active) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.avatar = avatar;
         this.active = active;
     }
 
@@ -116,6 +123,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -124,21 +139,21 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
     @XmlTransient
-    public Set<News> getNewsSet() {
-        return newsSet;
+    public Set<News> getNews() {
+        return news;
     }
 
-    public void setNewsSet(Set<News> newsSet) {
-        this.newsSet = newsSet;
+    public void setNews(Set<News> newsSet) {
+        this.news = newsSet;
     }
 
     public Student getStudent() {
@@ -157,29 +172,37 @@ public class User implements Serializable {
         this.lecturer = lecturer;
     }
 
+    public AcademicAffairs getManage() {
+        return manage;
+    }
+
+    public void setManage(AcademicAffairs manage) {
+        this.manage = manage;
+    }
+
+    public MultipartFile getAvatarFile() {
+        return avatarFile;
+    }
+
+    public void setAvatarFile(MultipartFile avatarFile) {
+        this.avatarFile = avatarFile;
+    }
+
     @XmlTransient
-    public Set<NotificationUser> getNotificationUserSet() {
-        return notificationUserSet;
+    public Set<NotificationUser> getNotificationUsers() {
+        return notificationUsers;
     }
 
-    public void setNotificationUserSet(Set<NotificationUser> notificationUserSet) {
-        this.notificationUserSet = notificationUserSet;
+    public void setNotificationUsers(Set<NotificationUser> notificationUserSet) {
+        this.notificationUsers = notificationUserSet;
     }
 
-    public AcademicAffairs getAcademicAffairs() {
-        return academicAffairs;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAcademicAffairs(AcademicAffairs academicAffairs) {
-        this.academicAffairs = academicAffairs;
-    }
-
-    public Role getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Role roleId) {
-        this.roleId = roleId;
+    public void setRole(Role roleId) {
+        this.role = roleId;
     }
 
     @Override
@@ -204,7 +227,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.User[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.User[ id=" + id + " ]";
     }
-    
+
 }

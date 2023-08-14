@@ -1,38 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
-@Table(name = "academic_affairs")
+@Table(name = "manage")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AcademicAffairs.findAll", query = "SELECT a FROM AcademicAffairs a"),
-    @NamedQuery(name = "AcademicAffairs.findById", query = "SELECT a FROM AcademicAffairs a WHERE a.id = :id"),
-    @NamedQuery(name = "AcademicAffairs.findByFullName", query = "SELECT a FROM AcademicAffairs a WHERE a.fullName = :fullName"),
-    @NamedQuery(name = "AcademicAffairs.findByEmail", query = "SELECT a FROM AcademicAffairs a WHERE a.email = :email"),
-    @NamedQuery(name = "AcademicAffairs.findByPhone", query = "SELECT a FROM AcademicAffairs a WHERE a.phone = :phone")})
+        @NamedQuery(name = "Manage.findAll", query = "SELECT m FROM Manage m"),
+        @NamedQuery(name = "Manage.findById", query = "SELECT m FROM Manage m WHERE m.id = :id"),
+        @NamedQuery(name = "Manage.findByFullName", query = "SELECT m FROM Manage m WHERE m.fullName = :fullName"),
+        @NamedQuery(name = "Manage.findByEmail", query = "SELECT m FROM Manage m WHERE m.email = :email"),
+        @NamedQuery(name = "Manage.findByPhone", query = "SELECT m FROM Manage m WHERE m.phone = :phone")})
 public class AcademicAffairs implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,25 +32,30 @@ public class AcademicAffairs implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{manage.add.fullName.notNullMessage}")
+    @NotNull(message = "{manage.add.fullName.notNullMessage}")
+    @Size(max = 100, message = "{manage.add.fullName.sizeMessage}")
     @Column(name = "full_name")
     private String fullName;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{manage.add.email.notNullMessage}")
+    @NotNull(message = "{manage.add.email.notNullMessage}")
+    @Size(max = 100, message = "{manage.add.email.sizeMessage}")
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{manage.add.email.format}")
     @Column(name = "email")
     private String email;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
+    @NotEmpty(message = "{manage.add.phone.notNullMessage}")
+    @NotNull(message = "{manage.add.phone.notNullMessage}")
+    @Size(max = 15, message = "{manage.add.phone.sizeMessage}")
+    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message = "{manage.add.phone.format}")
     @Column(name = "phone")
     private String phone;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @OneToOne
-    private User userId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"news", "student", "lecturer", "manage", "notificationUsers", "userRole"})
+    @Valid
+    private User user;
 
     public AcademicAffairs() {
     }
@@ -108,12 +103,12 @@ public class AcademicAffairs implements Serializable {
         this.phone = phone;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User userId) {
+        this.user = userId;
     }
 
     @Override
@@ -138,7 +133,7 @@ public class AcademicAffairs implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.AcademicAffairs[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Manage[ id=" + id + " ]";
     }
-    
+
 }

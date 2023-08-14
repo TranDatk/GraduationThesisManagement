@@ -4,6 +4,8 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -16,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "position")
@@ -42,15 +45,17 @@ public class Position implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{position.add.name.notNullMessage}")
+    @NotNull(message = "{position.add.name.notNullMessage}")
+    @Size(max = 100, message = "{position.add.name.maxMessage}")
     @Column(name = "name")
     private String name;
     @Size(max = 255)
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "positionId")
-    private Set<Lecturer> lecturerSet;
+    @OneToMany(mappedBy = "position")
+    @JsonIgnore
+    private Set<Lecturer> lecturers;
 
     public Position() {
     }
@@ -89,12 +94,12 @@ public class Position implements Serializable {
     }
 
     @XmlTransient
-    public Set<Lecturer> getLecturerSet() {
-        return lecturerSet;
+    public Set<Lecturer> getLecturers() {
+        return lecturers;
     }
 
-    public void setLecturerSet(Set<Lecturer> lecturerSet) {
-        this.lecturerSet = lecturerSet;
+    public void setLecturers(Set<Lecturer> lecturerSet) {
+        this.lecturers = lecturerSet;
     }
 
     @Override
@@ -119,7 +124,7 @@ public class Position implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Position[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Position[ id=" + id + " ]";
     }
     
 }

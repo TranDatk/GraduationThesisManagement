@@ -4,26 +4,17 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -54,54 +45,68 @@ public class Lecturer implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @NotEmpty(message = "{lecturer.add.code.notNullMessage}")
+    @NotNull(message = "{lecturer.add.code.notNullMessage}")
+    @Size(max = 10, message = "{lecturer.add.code.sizeMessage}")
     @Column(name = "code")
     private String code;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{lecturer.add.fullName.notNullMessage}")
+    @NotNull(message = "{lecturer.add.fullName.notNullMessage}")
+    @Size(max = 100, message = "{lecturer.add.fullName.sizeMessage}")
     @Column(name = "full_name")
     private String fullName;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{lecturer.add.email.notNullMessage}")
+    @NotNull(message = "{lecturer.add.email.notNullMessage}")
+    @Size(max = 100, message = "{lecturer.add.email.sizeMessage}")
+//    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",  message="{lecturer.add.email.format}")
     @Column(name = "email")
     private String email;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
+    @NotEmpty(message = "{lecturer.add.phone.notNullMessage}")
+    @NotNull(message = "{lecturer.add.phone.notNullMessage}")
+    @Size(max = 15, message = "{lecturer.add.phone.sizeMessage}")
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="{lecturer.add.phone.format}")
     @Column(name = "phone")
     private String phone;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{lecturer.add.birthday.notNullMessage}")
     @Column(name = "birthday")
-    @Temporal(TemporalType.DATE)
     private Date birthday;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{lecturer.add.gender.notNullMessage}")
     @Column(name = "gender")
     private int gender;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{lecturer.add.address.notNullMessage}")
+    @NotNull(message = "{lecturer.add.address.notNullMessage}")
+    @Size(max = 255, message = "{lecturer.add.address.sizeMessage}")
     @Column(name = "address")
     private String address;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reviewLecturer")
+    @JsonIgnore
+    private Set<Thesis> reviewTheses;
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     @ManyToOne
-    private Department departmentId;
+    @JsonIgnoreProperties({"code", "name", "description", "founding"})
+    private Department department;
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     @ManyToOne
-    private Position positionId;
+    @JsonIgnoreProperties({"name", "description"})
+    private Position position;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @OneToOne
-    private User userId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lecturerId")
-    private Set<CouncilDetail> councilDetailSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lecturerId")
-    private Set<Guide> guideSet;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"news", "student", "lecturer", "manage", "notificationUsers"})
+    @Valid
+    private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lecturer")
+    @JsonIgnore
+    private Set<CouncilDetail> councilDetails;
+    
+    @ManyToMany(mappedBy = "lecturers")
+    @JsonIgnore
+    private Set<Thesis> theses;
 
     public Lecturer() {
     }
@@ -185,46 +190,53 @@ public class Lecturer implements Serializable {
         this.address = address;
     }
 
-    public Department getDepartmentId() {
-        return departmentId;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Department departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(Department departmentId) {
+        this.department = departmentId;
     }
 
-    public Position getPositionId() {
-        return positionId;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPositionId(Position positionId) {
-        this.positionId = positionId;
+    public void setPosition(Position positionId) {
+        this.position = positionId;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
-
-    @XmlTransient
-    public Set<CouncilDetail> getCouncilDetailSet() {
-        return councilDetailSet;
-    }
-
-    public void setCouncilDetailSet(Set<CouncilDetail> councilDetailSet) {
-        this.councilDetailSet = councilDetailSet;
+    public void setUser(User userId) {
+        this.user = userId;
     }
 
     @XmlTransient
-    public Set<Guide> getGuideSet() {
-        return guideSet;
+    public Set<CouncilDetail> getCouncilDetails() {
+        return councilDetails;
     }
 
-    public void setGuideSet(Set<Guide> guideSet) {
-        this.guideSet = guideSet;
+    public void setCouncilDetails(Set<CouncilDetail> councilDetailSet) {
+        this.councilDetails = councilDetailSet;
+    }
+
+    public Set<Thesis> getTheses() {
+        return theses;
+    }
+
+    public void setTheses(Set<Thesis> theses) {
+        this.theses = theses;
+    }
+
+    public Set<Thesis> getReviewTheses() {
+        return reviewTheses;
+    }
+
+    public void setReviewTheses(Set<Thesis> reviewTheses) {
+        this.reviewTheses = reviewTheses;
     }
 
     @Override
@@ -249,7 +261,7 @@ public class Lecturer implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Lecturer[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Lecturer[ id=" + id + " ]";
     }
-    
+
 }

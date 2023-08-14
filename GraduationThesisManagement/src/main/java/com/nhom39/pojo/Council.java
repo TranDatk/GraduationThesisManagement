@@ -1,41 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "council")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Council.findAll", query = "SELECT c FROM Council c"),
-    @NamedQuery(name = "Council.findById", query = "SELECT c FROM Council c WHERE c.id = :id"),
-    @NamedQuery(name = "Council.findByName", query = "SELECT c FROM Council c WHERE c.name = :name"),
-    @NamedQuery(name = "Council.findByDescription", query = "SELECT c FROM Council c WHERE c.description = :description"),
-    @NamedQuery(name = "Council.findByIsBlock", query = "SELECT c FROM Council c WHERE c.isBlock = :isBlock")})
+@NamedQueries({@NamedQuery(name = "Council.findAll", query = "SELECT c FROM Council c"), @NamedQuery(name = "Council.findById", query = "SELECT c FROM Council c WHERE c.id = :id"), @NamedQuery(name = "Council.findByName", query = "SELECT c FROM Council c WHERE c.name = :name"), @NamedQuery(name = "Council.findByDescription", query = "SELECT c FROM Council c WHERE c.description = :description")})
 public class Council implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,22 +30,36 @@ public class Council implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
+    @NotNull(message = "{council.add.name.notNullMessage}")
+    @NotEmpty(message = "{council.add.name.notNullMessage}")
+    @Size(max = 200, message = "{council.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
-    @Size(max = 255)
+    @Size(max = 255, message = "{council.add.description.sizeMessage}")
     @Column(name = "description")
     private String description;
+
     @Column(name = "is_block")
-    private Boolean isBlock;
-    @OneToMany(mappedBy = "councilId")
-    private Set<CouncilDetail> councilDetailSet;
+    private Boolean block;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "council")
+    @NotEmpty(message = "{council.add.councilDetails.notNullMessage}")
+    @JsonIncludeProperties({"position", "lecturer", "council"})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Valid
+    private List<CouncilDetail> councilDetails;
     @JoinColumn(name = "school_year_id", referencedColumnName = "id")
     @ManyToOne
-    private SchoolYear schoolYearId;
-    @OneToMany(mappedBy = "councilId")
-    private Set<Thesis> thesisSet;
+    @JsonIncludeProperties({"id", "name"})
+    private SchoolYear schoolYear;
+    @OneToMany(mappedBy = "council", fetch = FetchType.EAGER)
+    @NotEmpty(message = "{council.add.theses.notNullMessage}")
+    @JsonIncludeProperties({"id", "code", "topic", "students"})
+    private Set<Thesis> theses;
+
+
+    {
+        this.block = true;
+    }
 
     public Council() {
     }
@@ -98,38 +97,37 @@ public class Council implements Serializable {
         this.description = description;
     }
 
-    public Boolean getIsBlock() {
-        return isBlock;
+    public Boolean getBlock() {
+        return block;
     }
 
-    public void setIsBlock(Boolean isBlock) {
-        this.isBlock = isBlock;
-    }
-
-    @XmlTransient
-    public Set<CouncilDetail> getCouncilDetailSet() {
-        return councilDetailSet;
-    }
-
-    public void setCouncilDetailSet(Set<CouncilDetail> councilDetailSet) {
-        this.councilDetailSet = councilDetailSet;
-    }
-
-    public SchoolYear getSchoolYearId() {
-        return schoolYearId;
-    }
-
-    public void setSchoolYearId(SchoolYear schoolYearId) {
-        this.schoolYearId = schoolYearId;
+    public void setBlock(Boolean block) {
+        this.block = block;
     }
 
     @XmlTransient
-    public Set<Thesis> getThesisSet() {
-        return thesisSet;
+    public List<CouncilDetail> getCouncilDetails() {
+        return councilDetails;
     }
 
-    public void setThesisSet(Set<Thesis> thesisSet) {
-        this.thesisSet = thesisSet;
+    public void setCouncilDetails(List<CouncilDetail> councilDetailSet) {
+        this.councilDetails = councilDetailSet;
+    }
+
+    public SchoolYear getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(SchoolYear schoolYearId) {
+        this.schoolYear = schoolYearId;
+    }
+
+    public Set<Thesis> getTheses() {
+        return theses;
+    }
+
+    public void setTheses(Set<Thesis> theses) {
+        this.theses = theses;
     }
 
     @Override
@@ -154,7 +152,7 @@ public class Council implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Council[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Council[ id=" + id + " ]";
     }
-    
+
 }

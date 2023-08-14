@@ -4,48 +4,25 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.*;
+import org.eclipse.persistence.annotations.Property;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "thesis")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Thesis.findAll", query = "SELECT t FROM Thesis t"),
-    @NamedQuery(name = "Thesis.findById", query = "SELECT t FROM Thesis t WHERE t.id = :id"),
-    @NamedQuery(name = "Thesis.findByCode", query = "SELECT t FROM Thesis t WHERE t.code = :code"),
-    @NamedQuery(name = "Thesis.findByStartDate", query = "SELECT t FROM Thesis t WHERE t.startDate = :startDate"),
-    @NamedQuery(name = "Thesis.findByComplateDate", query = "SELECT t FROM Thesis t WHERE t.complateDate = :complateDate"),
-    @NamedQuery(name = "Thesis.findByThesisStartDate", query = "SELECT t FROM Thesis t WHERE t.thesisStartDate = :thesisStartDate"),
-    @NamedQuery(name = "Thesis.findByThesisEndDate", query = "SELECT t FROM Thesis t WHERE t.thesisEndDate = :thesisEndDate"),
-    @NamedQuery(name = "Thesis.findByReportFile", query = "SELECT t FROM Thesis t WHERE t.reportFile = :reportFile"),
-    @NamedQuery(name = "Thesis.findByTotalScore", query = "SELECT t FROM Thesis t WHERE t.totalScore = :totalScore"),
-    @NamedQuery(name = "Thesis.findByResult", query = "SELECT t FROM Thesis t WHERE t.result = :result")})
+@NamedQueries({@NamedQuery(name = "Thesis.findAll", query = "SELECT t FROM Thesis t"), @NamedQuery(name = "Thesis.findById", query = "SELECT t FROM Thesis t WHERE t.id = :id"), @NamedQuery(name = "Thesis.findByCode", query = "SELECT t FROM Thesis t WHERE t.code = :code"), @NamedQuery(name = "Thesis.findByStartDate", query = "SELECT t FROM Thesis t WHERE t.startDate = :startDate"), @NamedQuery(name = "Thesis.findByComplateDate", query = "SELECT t FROM Thesis t WHERE t.complateDate = :complateDate"), @NamedQuery(name = "Thesis.findByThesisStartDate", query = "SELECT t FROM Thesis t WHERE t.thesisStartDate = :thesisStartDate"), @NamedQuery(name = "Thesis.findByThesisEndDate", query = "SELECT t FROM Thesis t WHERE t.thesisEndDate = :thesisEndDate"), @NamedQuery(name = "Thesis.findByReportFile", query = "SELECT t FROM Thesis t WHERE t.reportFile = :reportFile"), @NamedQuery(name = "Thesis.findByTotalScore", query = "SELECT t FROM Thesis t WHERE t.totalScore = :totalScore"), @NamedQuery(name = "Thesis.findByResult", query = "SELECT t FROM Thesis t WHERE t.result = :result")})
 public class Thesis implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,60 +32,78 @@ public class Thesis implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @NotEmpty(message = "{thesis.add.code.notNullMessage}")
+    @NotNull(message = "{thesis.add.code.notNullMessage}")
+    @Size(max = 20, message = "{thesis.add.code.sizeMessage}")
     @Column(name = "code")
     private String code;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{thesis.add.startDate.notNullMessage}")
     @Column(name = "start_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{thesis.add.endDate.notNullMessage}")
     @Column(name = "complate_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date complateDate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{thesis.add.thesisStartDate.notNullMessage}")
     @Column(name = "thesis_start_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date thesisStartDate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{thesis.add.thesisEndDate.notNullMessage}")
     @Column(name = "thesis_end_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date thesisEndDate;
-    @Size(max = 300)
+    @Basic(optional = false)
     @Column(name = "report_file")
     private String reportFile;
+
     @Lob
-    @Size(max = 2147483647)
+    @Size(max = 2147483647, message = "{thesis.add.comment.sizeMessage}")
     @Column(name = "comment")
     private String comment;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Min(value = 0, message = "{thesis.add.totalScore.sizeMessage}")
+    @Max(value = 10, message = "{thesis.add.totalScore.sizeMessage}")
     @Column(name = "total_score")
     private Double totalScore;
     @Column(name = "result")
     private Integer result;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "thesisId")
-    private Set<ThesisRegistration> thesisRegistrationSet;
-    @OneToMany(mappedBy = "thesisId")
-    private Set<Score> scoreSet;
+
+    @OneToMany(mappedBy = "thesis")
+    @JsonIgnore
+    private Set<Score> scores;
     @JoinColumn(name = "council_id", referencedColumnName = "id")
+    @JsonIgnore
     @ManyToOne
-    private Council councilId;
+    private Council council;
     @JoinColumn(name = "major_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"code", "description", "department"})
     @ManyToOne
-    private Major majorId;
+    private Major major;
     @JoinColumn(name = "school_year_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"startDate", "endDate"})
     @ManyToOne
-    private SchoolYear schoolYearId;
+    private SchoolYear schoolYear;
     @JoinColumn(name = "topic_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"description", "department"})
     @ManyToOne
-    private Topic topicId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "thesisId")
-    private Set<Guide> guideSet;
+    private Topic topic;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @NotEmpty(message = "{thesis.add.lecturers.notNullMessage}")
+    @JoinTable(name = "guide", joinColumns = {@JoinColumn(name = "thesis_id")}, inverseJoinColumns = {@JoinColumn(name = "lecturer_id")})
+    @JsonIncludeProperties({"id", "code", "fullName"})
+    public Set<Lecturer> lecturers;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @NotEmpty(message = "{thesis.add.students.notNullMessage}")
+    @JoinTable(name = "thesis_registration", joinColumns = {@JoinColumn(name = "thesis_id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    private Set<Student> students;
+
+    @Transient
+    private Boolean scored;
 
     public Thesis() {
     }
@@ -117,13 +112,19 @@ public class Thesis implements Serializable {
         this.id = id;
     }
 
-    public Thesis(Integer id, String code, Date startDate, Date complateDate, Date thesisStartDate, Date thesisEndDate) {
+    public Thesis(Integer id, String code, Date startDate, Date complateDate, Date thesisStartDate, Date thesisEndDate, String reportFile, int status) {
         this.id = id;
         this.code = code;
         this.startDate = startDate;
         this.complateDate = complateDate;
         this.thesisStartDate = thesisStartDate;
         this.thesisEndDate = thesisEndDate;
+        this.reportFile = reportFile;
+    }
+
+    {
+        this.totalScore = 0.0;
+        this.result = 1;
     }
 
     public Integer getId() {
@@ -206,63 +207,68 @@ public class Thesis implements Serializable {
         this.result = result;
     }
 
-    @XmlTransient
-    public Set<ThesisRegistration> getThesisRegistrationSet() {
-        return thesisRegistrationSet;
+    public Set<Score> getScores() {
+        return scores;
     }
 
-    public void setThesisRegistrationSet(Set<ThesisRegistration> thesisRegistrationSet) {
-        this.thesisRegistrationSet = thesisRegistrationSet;
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
     }
 
-    @XmlTransient
-    public Set<Score> getScoreSet() {
-        return scoreSet;
+    public Council getCouncil() {
+        return council;
     }
 
-    public void setScoreSet(Set<Score> scoreSet) {
-        this.scoreSet = scoreSet;
+    public void setCouncil(Council council) {
+        this.council = council;
     }
 
-    public Council getCouncilId() {
-        return councilId;
+    public Major getMajor() {
+        return major;
     }
 
-    public void setCouncilId(Council councilId) {
-        this.councilId = councilId;
+    public void setMajor(Major major) {
+        this.major = major;
     }
 
-    public Major getMajorId() {
-        return majorId;
+    public SchoolYear getSchoolYear() {
+        return schoolYear;
     }
 
-    public void setMajorId(Major majorId) {
-        this.majorId = majorId;
+    public void setSchoolYear(SchoolYear schoolYear) {
+        this.schoolYear = schoolYear;
     }
 
-    public SchoolYear getSchoolYearId() {
-        return schoolYearId;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setSchoolYearId(SchoolYear schoolYearId) {
-        this.schoolYearId = schoolYearId;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
-    public Topic getTopicId() {
-        return topicId;
+    public Set<Lecturer> getLecturers() {
+        return lecturers;
     }
 
-    public void setTopicId(Topic topicId) {
-        this.topicId = topicId;
+    public void setLecturers(Set<Lecturer> lecturers) {
+        this.lecturers = lecturers;
     }
 
-    @XmlTransient
-    public Set<Guide> getGuideSet() {
-        return guideSet;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setGuideSet(Set<Guide> guideSet) {
-        this.guideSet = guideSet;
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    public Boolean getScored() {
+        return scored;
+    }
+
+    public void setScored(Boolean scored) {
+        this.scored = scored;
     }
 
     @Override
@@ -287,7 +293,7 @@ public class Thesis implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Thesis[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Thesis[ id=" + id + " ]";
     }
-    
+
 }

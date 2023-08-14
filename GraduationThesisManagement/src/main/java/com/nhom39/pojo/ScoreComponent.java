@@ -4,20 +4,13 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "score_component")
@@ -43,15 +36,18 @@ public class ScoreComponent implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{scoreComponent.add.name.notNullMessage}")
+    @NotNull(message = "{scoreComponent.add.name.notNullMessage}")
+    @Size(max = 255, message = "{scoreComponent.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "scoreComponentId")
-    private Set<ScoreColumn> scoreColumnSet;
+    @OneToMany(mappedBy = "scoreComponent", fetch = FetchType.EAGER)
+    @Valid
+    private List<ScoreColumn> scoreColumns;
     @JoinColumn(name = "evaluation_method_id", referencedColumnName = "id")
-    @ManyToOne
-    private EvaluationMethod evaluationMethodId;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
+    private EvaluationMethod evaluationMethod;
 
     public ScoreComponent() {
     }
@@ -82,20 +78,20 @@ public class ScoreComponent implements Serializable {
     }
 
     @XmlTransient
-    public Set<ScoreColumn> getScoreColumnSet() {
-        return scoreColumnSet;
+    public List<ScoreColumn> getScoreColumns() {
+        return scoreColumns;
     }
 
-    public void setScoreColumnSet(Set<ScoreColumn> scoreColumnSet) {
-        this.scoreColumnSet = scoreColumnSet;
+    public void setScoreColumns(List<ScoreColumn> scoreColumnSet) {
+        this.scoreColumns = scoreColumnSet;
     }
 
-    public EvaluationMethod getEvaluationMethodId() {
-        return evaluationMethodId;
+    public EvaluationMethod getEvaluationMethod() {
+        return evaluationMethod;
     }
 
-    public void setEvaluationMethodId(EvaluationMethod evaluationMethodId) {
-        this.evaluationMethodId = evaluationMethodId;
+    public void setEvaluationMethod(EvaluationMethod evaluationMothodId) {
+        this.evaluationMethod = evaluationMothodId;
     }
 
     @Override
@@ -120,7 +116,7 @@ public class ScoreComponent implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.ScoreComponent[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.ScoreComponent[ id=" + id + " ]";
     }
     
 }

@@ -4,21 +4,13 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "department")
@@ -47,29 +39,34 @@ public class Department implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @NotEmpty(message = "{department.add.code.notNullMessage}")
+    @NotNull(message ="{department.add.code.notNullMessage}")
+    @Size(max = 10, message = "{department.add.code.sizeMessage}")
     @Column(name = "code")
     private String code;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{department.add.name.notNullMessage}")
+    @NotNull(message = "{department.add.name.notNullMessage}")
+    @Size(max = 100, message = "{department.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
-    @Size(max = 255)
+    @Size(max = 255, message = "{department.add.description.maxMessage}")
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{department.add.founding.notNullMessage}")
     @Column(name = "founding")
-    @Temporal(TemporalType.DATE)
     private Date founding;
-    @OneToMany(mappedBy = "departmentId")
-    private Set<Lecturer> lecturerSet;
-    @OneToMany(mappedBy = "departmentId")
-    private Set<Major> majorSet;
-    @OneToMany(mappedBy = "departmentId")
-    private Set<Topic> topicSet;
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private Set<Lecturer> lecturers;
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private Set<Major> majors;
+
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private Set<Topic> topics;
 
     public Department() {
     }
@@ -126,30 +123,31 @@ public class Department implements Serializable {
     }
 
     @XmlTransient
-    public Set<Lecturer> getLecturerSet() {
-        return lecturerSet;
+    public Set<Lecturer> getLecturers() {
+        return lecturers;
     }
 
-    public void setLecturerSet(Set<Lecturer> lecturerSet) {
-        this.lecturerSet = lecturerSet;
-    }
-
-    @XmlTransient
-    public Set<Major> getMajorSet() {
-        return majorSet;
-    }
-
-    public void setMajorSet(Set<Major> majorSet) {
-        this.majorSet = majorSet;
+    public void setLecturers(Set<Lecturer> lecturerSet) {
+        this.lecturers = lecturerSet;
     }
 
     @XmlTransient
-    public Set<Topic> getTopicSet() {
-        return topicSet;
+    public Set<Major> getMajors() {
+        return majors;
     }
 
-    public void setTopicSet(Set<Topic> topicSet) {
-        this.topicSet = topicSet;
+    public void setMajors(Set<Major> majorSet) {
+        this.majors = majorSet;
+    }
+
+
+    @XmlTransient
+    public Set<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Set<Topic> topicSet) {
+        this.topics = topicSet;
     }
 
     @Override
@@ -174,7 +172,7 @@ public class Department implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Department[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Department[ id=" + id + " ]";
     }
     
 }

@@ -4,6 +4,10 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -18,6 +22,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "major")
@@ -45,25 +50,32 @@ public class Major implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @NotEmpty(message = "{major.add.code.notNullMessage}")
+    @NotNull(message = "{major.add.code.notNullMessage}")
+    @Size(max = 10, message = "{major.add.code.sizeMessage}")
     @Column(name = "code")
     private String code;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{major.add.name.notNullMessage}")
+    @NotNull(message = "{major.add.name.notNullMessage}")
+    @Size(max = 100, message = "{major.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
-    @Size(max = 255)
+    @Size(max = 255, message = "{major.add.description.maxMessage}")
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "majorId")
-    private Set<Student> studentSet;
+    @OneToMany(mappedBy = "major")
+    @JsonIgnore
+    private Set<Student> students;
+
+    @OneToMany(mappedBy = "major")
+    @JsonIgnore
+    public Set<Thesis> theses;
+
     @JoinColumn(name = "department_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"code", "description", "founding"})
     @ManyToOne
-    private Department departmentId;
-    @OneToMany(mappedBy = "majorId")
-    private Set<Thesis> thesisSet;
+    private Department department;
 
     public Major() {
     }
@@ -111,29 +123,28 @@ public class Major implements Serializable {
     }
 
     @XmlTransient
-    public Set<Student> getStudentSet() {
-        return studentSet;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+    public void setStudents(Set<Student> studentSet) {
+        this.students = studentSet;
     }
 
-    public Department getDepartmentId() {
-        return departmentId;
+    public Set<Thesis> getTheses() {
+        return theses;
     }
 
-    public void setDepartmentId(Department departmentId) {
-        this.departmentId = departmentId;
+    public void setTheses(Set<Thesis> theses) {
+        this.theses = theses;
     }
 
-    @XmlTransient
-    public Set<Thesis> getThesisSet() {
-        return thesisSet;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setThesisSet(Set<Thesis> thesisSet) {
-        this.thesisSet = thesisSet;
+    public void setDepartment(Department departmentId) {
+        this.department = departmentId;
     }
 
     @Override
@@ -158,7 +169,7 @@ public class Major implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Major[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Major[ id=" + id + " ]";
     }
     
 }

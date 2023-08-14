@@ -5,17 +5,10 @@
 package com.nhom39.pojo;
 
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "evaluation_method")
@@ -42,16 +35,21 @@ public class EvaluationMethod implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "{evaluationMethod.add.name.notNullMessage}")
+    @NotNull(message = "{evaluationMethod.add.name.notNullMessage}")
+    @Size(max = 100, message = "{evaluationMethod.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "active")
     private boolean active;
-    @OneToMany(mappedBy = "evaluationMethodId")
-    private Set<ScoreComponent> scoreComponentSet;
+    @OneToMany(mappedBy = "evaluationMethod", fetch = FetchType.EAGER)
+    @Valid
+    private List<ScoreComponent> scoreComponents;
+
+    {
+        this.active = false;
+    }
 
     public EvaluationMethod() {
     }
@@ -91,12 +89,12 @@ public class EvaluationMethod implements Serializable {
     }
 
     @XmlTransient
-    public Set<ScoreComponent> getScoreComponentSet() {
-        return scoreComponentSet;
+    public List<ScoreComponent> getScoreComponents() {
+        return scoreComponents;
     }
 
-    public void setScoreComponentSet(Set<ScoreComponent> scoreComponentSet) {
-        this.scoreComponentSet = scoreComponentSet;
+    public void setScoreComponents(List<ScoreComponent> scoreComponentSet) {
+        this.scoreComponents = scoreComponentSet;
     }
 
     @Override
@@ -121,7 +119,7 @@ public class EvaluationMethod implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.EvaluationMethod[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.EvaluationMethod[ id=" + id + " ]";
     }
     
 }

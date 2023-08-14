@@ -42,7 +42,7 @@ public class EmailServiceImplement implements EmailService {
         }
     }
 
-    private MimeMessagePreparator getMessagePreparator(String subject, String[] to, Map<String, Object> model, int type) {
+    private MimeMessagePreparator getMessagePreparator(final String subject, final String[] to, final Map<String, Object> model, final int type) {
 
         return new MimeMessagePreparator() {
 

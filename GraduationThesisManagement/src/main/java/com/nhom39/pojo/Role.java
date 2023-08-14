@@ -4,6 +4,8 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "role")
@@ -48,9 +50,11 @@ public class Role implements Serializable {
     private String roleName;
     @Size(max = 255)
     @Column(name = "description")
+    @JsonIgnore
     private String description;
-    @OneToMany(mappedBy = "roleId")
-    private Set<User> userSet;
+    @OneToMany(mappedBy = "role")
+    @JsonIgnore
+    private Set<User> users;
 
     public Role() {
     }
@@ -89,12 +93,12 @@ public class Role implements Serializable {
     }
 
     @XmlTransient
-    public Set<User> getUserSet() {
-        return userSet;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUserSet(Set<User> userSet) {
-        this.userSet = userSet;
+    public void setUsers(Set<User> userSet) {
+        this.users = userSet;
     }
 
     @Override
@@ -119,7 +123,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Role[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Role[ id=" + id + " ]";
     }
     
 }

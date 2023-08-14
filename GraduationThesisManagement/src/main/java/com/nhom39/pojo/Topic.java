@@ -4,20 +4,12 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "topic")
@@ -44,18 +36,20 @@ public class Topic implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{topic.add.name.notNullMessage}")
+    @NotNull(message = "{topic.add.name.notNullMessage}")
+    @Size(max = 255, message = "{topic.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
-    @Size(max = 255)
+    @Size(max = 255, message = "{topic.add.description.maxMessage}")
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "topicId")
-    private Set<Thesis> thesisSet;
+    @OneToMany(mappedBy = "topic")
+    @JsonIgnore
+    private Set<Thesis> theses;
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     @ManyToOne
-    private Department departmentId;
+    private Department department;
 
     public Topic() {
     }
@@ -94,20 +88,20 @@ public class Topic implements Serializable {
     }
 
     @XmlTransient
-    public Set<Thesis> getThesisSet() {
-        return thesisSet;
+    public Set<Thesis> getTheses() {
+        return theses;
     }
 
-    public void setThesisSet(Set<Thesis> thesisSet) {
-        this.thesisSet = thesisSet;
+    public void setTheses(Set<Thesis> thesisSet) {
+        this.theses = thesisSet;
     }
 
-    public Department getDepartmentId() {
-        return departmentId;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Department departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(Department departmentId) {
+        this.department = departmentId;
     }
 
     @Override
@@ -132,7 +126,7 @@ public class Topic implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.Topic[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.Topic[ id=" + id + " ]";
     }
     
 }

@@ -4,20 +4,13 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "score_column")
@@ -44,18 +37,22 @@ public class ScoreColumn implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @NotEmpty(message = "{scoreColumn.add.name.notNullMessage}")
+    @NotNull(message = "{scoreColumn.add.name.notNullMessage}")
+    @Size(max = 100, message = "{scoreColumn.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "weight")
+    @NotNull(message = "{scoreColumn.add.weight.notNullMessage}")
     private Double weight;
     @JoinColumn(name = "score_component_id", referencedColumnName = "id")
-    @ManyToOne
-    private ScoreComponent scoreComponentId;
-    @OneToMany(mappedBy = "scoreColumnId")
-    private Set<ScoreDetail> scoreDetailSet;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIncludeProperties({"id", "name"})
+    private ScoreComponent scoreComponent;
+    @OneToMany(mappedBy = "scoreColumn")
+    @JsonIgnore
+    private List<ScoreDetail> scoreDetails;
 
     public ScoreColumn() {
     }
@@ -93,21 +90,21 @@ public class ScoreColumn implements Serializable {
         this.weight = weight;
     }
 
-    public ScoreComponent getScoreComponentId() {
-        return scoreComponentId;
+    public ScoreComponent getScoreComponent() {
+        return scoreComponent;
     }
 
-    public void setScoreComponentId(ScoreComponent scoreComponentId) {
-        this.scoreComponentId = scoreComponentId;
+    public void setScoreComponent(ScoreComponent scoreComponentId) {
+        this.scoreComponent = scoreComponentId;
     }
 
     @XmlTransient
-    public Set<ScoreDetail> getScoreDetailSet() {
-        return scoreDetailSet;
+    public List<ScoreDetail> getScoreDetails() {
+        return scoreDetails;
     }
 
-    public void setScoreDetailSet(Set<ScoreDetail> scoreDetailSet) {
-        this.scoreDetailSet = scoreDetailSet;
+    public void setScoreDetails(List<ScoreDetail> scoreDetailSet) {
+        this.scoreDetails = scoreDetailSet;
     }
 
     @Override
@@ -132,7 +129,7 @@ public class ScoreColumn implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.ScoreColumn[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.ScoreColumn[ id=" + id + " ]";
     }
     
 }

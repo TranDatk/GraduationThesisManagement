@@ -4,6 +4,8 @@
  */
 package com.nhom39.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -19,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author bkhuy
  */
 @Entity
 @Table(name = "school_year")
@@ -46,26 +49,30 @@ public class SchoolYear implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotEmpty(message = "{schoolYear.add.name.notNullMessage}")
+    @NotNull(message = "{schoolYear.add.name.notNullMessage}")
+    @Size(max = 50, message = "{schoolYear.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{schoolYear.add.startDate.notNullMessage}")
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{schoolYear.add.endDate.notNullMessage}")
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
-    @OneToMany(mappedBy = "schoolYearId")
-    private Set<Student> studentSet;
-    @OneToMany(mappedBy = "schoolYearId")
-    private Set<Council> councilSet;
-    @OneToMany(mappedBy = "schoolYearId")
-    private Set<Thesis> thesisSet;
+    @OneToMany(mappedBy = "schoolYear")
+    @JsonIgnore
+    private Set<Student> students;
+    @OneToMany(mappedBy = "schoolYear")
+    @JsonIgnore
+    private Set<Council> councils;
+    @OneToMany(mappedBy = "schoolYear")
+    @JsonIgnore
+    private Set<Thesis> theses;
 
     public SchoolYear() {
     }
@@ -114,30 +121,30 @@ public class SchoolYear implements Serializable {
     }
 
     @XmlTransient
-    public Set<Student> getStudentSet() {
-        return studentSet;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
-    }
-
-    @XmlTransient
-    public Set<Council> getCouncilSet() {
-        return councilSet;
-    }
-
-    public void setCouncilSet(Set<Council> councilSet) {
-        this.councilSet = councilSet;
+    public void setStudents(Set<Student> studentSet) {
+        this.students = studentSet;
     }
 
     @XmlTransient
-    public Set<Thesis> getThesisSet() {
-        return thesisSet;
+    public Set<Council> getCouncils() {
+        return councils;
     }
 
-    public void setThesisSet(Set<Thesis> thesisSet) {
-        this.thesisSet = thesisSet;
+    public void setCouncils(Set<Council> councilSet) {
+        this.councils = councilSet;
+    }
+
+    @XmlTransient
+    public Set<Thesis> getTheses() {
+        return theses;
+    }
+
+    public void setTheses(Set<Thesis> thesisSet) {
+        this.theses = thesisSet;
     }
 
     @Override
@@ -162,7 +169,7 @@ public class SchoolYear implements Serializable {
 
     @Override
     public String toString() {
-        return "com.nhom39.pojo.SchoolYear[ id=" + id + " ]";
+        return "com.buikhanhhuy.pojo.SchoolYear[ id=" + id + " ]";
     }
     
 }
