@@ -19,6 +19,7 @@ import java.util.*;
 
 @Service
 public class ThesisServiceImplement implements ThesisService {
+
     @Autowired
     private ThesisRepository thesisRepository;
     @Autowired
@@ -30,20 +31,17 @@ public class ThesisServiceImplement implements ThesisService {
 
     @Override
     public void sendReviewLectureThesisNotification(Thesis thesis) {
-        String[] toEmail = null;
+        String[] toEmail;
         Map<String, Object> model = new HashMap<>();
         Thesis modelThesis = this.thesisRepository.getThesisById(thesis.getId());
 
         model.put("thesis", modelThesis);
-        for(Lecturer t : modelThesis.getLecturers()){
-            toEmail = new String[]{t.getEmail()};
-        }
-        
-        if(toEmail != null){
-             this.emailService.sendMail("Thông báo giảng viên phản biện khóa luận tốt nghiệp",
+
+        toEmail = new String[]{modelThesis.getReviewLecturer().getEmail()};
+
+        this.emailService.sendMail("Thông báo giảng viên phản biện khóa luận tốt nghiệp",
                 toEmail, model,
                 SystemConstant.REVIEW_LECTURER_EMAIL_TEMPLATE);
-        }
     }
 
     @Override
@@ -66,7 +64,6 @@ public class ThesisServiceImplement implements ThesisService {
         return this.thesisRepository.getTheses(params);
     }
 
-
     @Override
     public long countThesis(Map<String, String> params) {
         return this.thesisRepository.countThesis(params);
@@ -77,7 +74,7 @@ public class ThesisServiceImplement implements ThesisService {
         return this.thesisRepository.countAllThesis();
     }
 
-    @Override
+     @Override
     public Boolean addThesis(Thesis thesis) {
         if (this.thesisRepository.addThesis(thesis)) {
             Thesis thesisResult = this.thesisRepository.getThesisById(thesis.getId());
@@ -107,11 +104,7 @@ public class ThesisServiceImplement implements ThesisService {
 
             usersId = new HashSet<>();
             notification = new Notification();
-            
-            for(Lecturer l : thesisResult.getLecturers()){
-                 usersId.add(l.getUser().getId());
-            }
-           
+            usersId.add(thesisResult.getReviewLecturer().getUser().getId());
             notification.setTitle("Thông báo giảng viên phản biện khóa luận tốt nghiệp");
             notification.setContent("Vào mục khóa luận phản biện để xem chi tiết");
             this.notificationRepository.addNotification(notification, usersId);
@@ -146,6 +139,5 @@ public class ThesisServiceImplement implements ThesisService {
 
         return false;
     }
-
 
 }

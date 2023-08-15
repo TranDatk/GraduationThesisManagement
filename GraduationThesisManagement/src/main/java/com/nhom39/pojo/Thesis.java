@@ -101,6 +101,11 @@ public class Thesis implements Serializable {
     @NotEmpty(message = "{thesis.add.students.notNullMessage}")
     @JoinTable(name = "thesis_registration", joinColumns = {@JoinColumn(name = "thesis_id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     private Set<Student> students;
+    
+    @ManyToOne
+    @JoinColumn(name = "review_lecturer_id", referencedColumnName = "id")
+    @JsonIncludeProperties({"id", "fullName"})
+    private Lecturer reviewLecturer;
 
     @Transient
     private Boolean scored;
@@ -276,6 +281,14 @@ public class Thesis implements Serializable {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
+    }
+    
+     public Lecturer getReviewLecturer() {
+        return reviewLecturer;
+    }
+
+    public void setReviewLecturer(Lecturer reviewLecturer) {
+        this.reviewLecturer = reviewLecturer;
     }
 
     @Override

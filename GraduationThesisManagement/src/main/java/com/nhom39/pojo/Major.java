@@ -49,18 +49,21 @@ public class Major implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotEmpty(message = "{major.add.code.notNullMessage}")
     @NotNull(message = "{major.add.code.notNullMessage}")
     @Size(max = 10, message = "{major.add.code.sizeMessage}")
     @Column(name = "code")
     private String code;
+    
     @Basic(optional = false)
     @NotEmpty(message = "{major.add.name.notNullMessage}")
     @NotNull(message = "{major.add.name.notNullMessage}")
     @Size(max = 100, message = "{major.add.name.sizeMessage}")
     @Column(name = "name")
     private String name;
+    
     @Size(max = 255, message = "{major.add.description.maxMessage}")
     @Column(name = "description")
     private String description;

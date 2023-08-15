@@ -1,6 +1,6 @@
 package com.nhom39.controllers.admin;
 
-import com.nhom39.service.ManageService;
+import com.nhom39.service.AcademicAffairsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,16 +13,16 @@ import java.util.Map;
 
 @Controller(value = "AdminManageController")
 @RequestMapping(path = "/admin")
-public class ManageController {
+public class AcademicAffairsController {
     @Autowired
-    private ManageService manageService;
+    private AcademicAffairsService manageService;
 
     @GetMapping(path = "/manages")
     public String manageList(Model model, @RequestParam(required = false) Map<String, String> params) {
         model.addAttribute("page", Integer.parseInt((params.get("page") != null && !params.get("page").isEmpty())
                 ? params.get("page") : "1"));
-        model.addAttribute("totalPage", this.manageService.countManage(params));
-        model.addAttribute("manages", this.manageService.getManages(params));
+        model.addAttribute("totalPage", this.manageService.countAcademicAffairs(params));
+        model.addAttribute("manages", this.manageService.getAcademicAffairs(params));
 
         return "adminManageList";
     }
