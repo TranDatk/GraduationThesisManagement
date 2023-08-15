@@ -30,7 +30,7 @@ import java.util.Set;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.buikhanhhuy.controllers", "com.buikhanhhuy.api", "com.buikhanhhuy.repository", "com.buikhanhhuy.service", "com.buikhanhhuy.validators"})
+@ComponentScan(basePackages = {"com.nhom39.controllers", "com.nhom39.api", "com.nhom39.repository", "com.nhom39.service", "com.nhom39.validators"})
 public class WebApplicationConfigContext implements WebMvcConfigurer {
     @Autowired
     private UserService userService;
