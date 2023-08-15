@@ -14,7 +14,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 @Configuration
-@ComponentScan(basePackages = "com.buikhanhhuy")
+@ComponentScan(basePackages = "com.nhom39")
 @PropertySource("classpath:application.properties")
 public class EmailConfig {
     @Autowired

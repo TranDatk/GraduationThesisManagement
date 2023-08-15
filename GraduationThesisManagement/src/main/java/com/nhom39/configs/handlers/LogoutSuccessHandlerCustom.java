@@ -1,4 +1,4 @@
-package com.buikhanhhuy.configs.handlers;
+package com.nhom39.configs.handlers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;

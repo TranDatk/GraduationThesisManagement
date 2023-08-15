@@ -1,9 +1,9 @@
 package com.nhom39.configs;
 
-//import com.nhom39.converters.StringToLocalDateConverter;
-//import com.nhom39.formatters.*;
-//import com.nhom39.service.*;
-//import com.nhom39.validators.*;
+import com.nhom39.converters.StringToLocalDateConverter;
+import com.nhom39.formatters.*;
+import com.nhom39.service.*;
+import com.nhom39.validators.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +32,26 @@ import java.util.Set;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.buikhanhhuy.controllers", "com.buikhanhhuy.api", "com.buikhanhhuy.repository", "com.buikhanhhuy.service", "com.buikhanhhuy.validators"})
 public class WebApplicationConfigContext implements WebMvcConfigurer {
-//    @Autowired
-//    private UserService userService;
-//    @Autowired
-//    private DepartmentService departmentService;
-//    @Autowired
-//    private MajorService majorService;
-//    @Autowired
-//    private SchoolYearService schoolYearService;
-//    @Autowired
-//    private PositionService positionService;
-//    @Autowired
-//    private LecturerService lecturerService;
-//    @Autowired
-//    private StudentService studentService;
-//    @Autowired
-//    private ManageService manageService;
-//    @Autowired
-//    private TopicService topicService;
-//    @Autowired
-//    private ThesisService thesisService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private MajorService majorService;
+    @Autowired
+    private SchoolYearService schoolYearService;
+    @Autowired
+    private PositionService positionService;
+    @Autowired
+    private LecturerService lecturerService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private AcademicAffairsService academicAffairsService;
+    @Autowired
+    private TopicService topicService;
+    @Autowired
+    private ThesisService thesisService;
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -75,22 +75,22 @@ public class WebApplicationConfigContext implements WebMvcConfigurer {
         return validator();
     }
 
-//    @Override
-//    public void addFormatters(FormatterRegistry registry) {
-//        registry.addConverter(new StringToLocalDateConverter("yyyy-MM-dd"));
-//        registry.addFormatter(new UserFormatter());
-//        registry.addFormatter(new DepartmentFormatter());
-//        registry.addFormatter(new MajorFormatter());
-//        registry.addFormatter(new SchoolYearFormatter());
-//        registry.addFormatter(new PositionFormatter());
-//        registry.addFormatter(new RoleFormatter());
-//        registry.addFormatter(new LecturerFormatter());
-//        registry.addFormatter(new StudentFormatter());
-//        registry.addFormatter(new ThesisFormatter());
-//        registry.addFormatter(new CouncilFormatter());
-//        registry.addFormatter(new CouncilDetailFormatter());
-//        registry.addFormatter(new ScoreColumnFormatter());
-//    }
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToLocalDateConverter("yyyy-MM-dd"));
+        registry.addFormatter(new UserFormatter());
+        registry.addFormatter(new DepartmentFormatter());
+        registry.addFormatter(new MajorFormatter());
+        registry.addFormatter(new SchoolYearFormatter());
+        registry.addFormatter(new PositionFormatter());
+        registry.addFormatter(new RoleFormatter());
+        registry.addFormatter(new LecturerFormatter());
+        registry.addFormatter(new StudentFormatter());
+        registry.addFormatter(new ThesisFormatter());
+        registry.addFormatter(new CouncilFormatter());
+        registry.addFormatter(new CouncilDetailFormatter());
+        registry.addFormatter(new ScoreColumnFormatter());
+    }
 
 
     @Bean
@@ -120,151 +120,151 @@ public class WebApplicationConfigContext implements WebMvcConfigurer {
         return localValidatorFactoryBean;
     }
 
-//    @Bean
-//    public WebAppValidator departmentValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueDepartmentCodeValidator(departmentService));
-//        springValidators.add(new UniqueDepartmentNameValidator(departmentService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator majorValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueMajorCodeValidator(majorService));
-//        springValidators.add(new UniqueMajorNameValidator(majorService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator schoolYearValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new SchoolYearDateValidator());
-//        springValidators.add(new UniqueSchoolYearNameValidator(schoolYearService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator positionValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniquePositionNameValidator(positionService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator lecturerValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueLecturerCodeValidator(lecturerService));
-//        springValidators.add(new UniqueLecturerEmailValidator(lecturerService));
-//        springValidators.add(new UniqueLecturerPhoneValidator(lecturerService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator studentValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueStudentCodeValidator(studentService));
-//        springValidators.add(new UniqueStudentEmailValidator(studentService));
-//        springValidators.add(new UniqueStudentPhoneValidator(studentService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator manageValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueManageEmailValidator(manageService));
-//        springValidators.add(new UniqueManagePhoneValidator(manageService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator thesisValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new ThesisLecturersValidator());
-//        springValidators.add(new ThesisStudentsValidator(thesisService));
-//        springValidators.add(new ThesisReviewLecturerValidator());
-//        springValidators.add(new ThesisDateValidator());
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator councilValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new CouncilThesisValidator());
-//        springValidators.add(new CouncilMemberValidator());
-//        springValidators.add(new CouncilMemberUnique());
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator userValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueUserUsernameValidator(userService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//    @Bean
-//    public WebAppValidator topicValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new UniqueTopicNameValidator(topicService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
-//
-//
-//    @Bean
-//    public WebAppValidator passwordUserValidator() {
-//        Set<Validator> springValidators = new HashSet<>();
-//        springValidators.add(new PasswordValidator(userService));
-//
-//        WebAppValidator webAppValidator = new WebAppValidator();
-//        webAppValidator.setValidators(springValidators);
-//
-//        return webAppValidator;
-//    }
+    @Bean
+    public WebAppValidator departmentValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueDepartmentCodeValidator(departmentService));
+        springValidators.add(new UniqueDepartmentNameValidator(departmentService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator majorValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueMajorCodeValidator(majorService));
+        springValidators.add(new UniqueMajorNameValidator(majorService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator schoolYearValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new SchoolYearDateValidator());
+        springValidators.add(new UniqueSchoolYearNameValidator(schoolYearService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator positionValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniquePositionNameValidator(positionService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator lecturerValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueLecturerCodeValidator(lecturerService));
+        springValidators.add(new UniqueLecturerEmailValidator(lecturerService));
+        springValidators.add(new UniqueLecturerPhoneValidator(lecturerService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator studentValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueStudentCodeValidator(studentService));
+        springValidators.add(new UniqueStudentEmailValidator(studentService));
+        springValidators.add(new UniqueStudentPhoneValidator(studentService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator manageValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueManageEmailValidator(academicAffairsService));
+        springValidators.add(new UniqueManagePhoneValidator(academicAffairsService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator thesisValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new ThesisLecturersValidator());
+        springValidators.add(new ThesisStudentsValidator(thesisService));
+        springValidators.add(new ThesisReviewLecturerValidator());
+        springValidators.add(new ThesisDateValidator());
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator councilValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new CouncilThesisValidator());
+        springValidators.add(new CouncilMemberValidator());
+        springValidators.add(new CouncilMemberUnique());
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator userValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueUserUsernameValidator(userService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+    @Bean
+    public WebAppValidator topicValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new UniqueTopicNameValidator(topicService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
+
+
+    @Bean
+    public WebAppValidator passwordUserValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new PasswordValidator(userService));
+
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setValidators(springValidators);
+
+        return webAppValidator;
+    }
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
