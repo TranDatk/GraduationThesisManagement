@@ -15,14 +15,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author bkhuy
  */
 @Entity
-@Table(name = "manage")
+@Table(name = "academic_affairs")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Manage.findAll", query = "SELECT m FROM Manage m"),
-        @NamedQuery(name = "Manage.findById", query = "SELECT m FROM Manage m WHERE m.id = :id"),
-        @NamedQuery(name = "Manage.findByFullName", query = "SELECT m FROM Manage m WHERE m.fullName = :fullName"),
-        @NamedQuery(name = "Manage.findByEmail", query = "SELECT m FROM Manage m WHERE m.email = :email"),
-        @NamedQuery(name = "Manage.findByPhone", query = "SELECT m FROM Manage m WHERE m.phone = :phone")})
+        @NamedQuery(name = "AcademicAffairs.findAll", query = "SELECT m FROM AcademicAffairs m"),
+        @NamedQuery(name = "AcademicAffairs.findById", query = "SELECT m FROM AcademicAffairs m WHERE m.id = :id"),
+        @NamedQuery(name = "AcademicAffairs.findByFullName", query = "SELECT m FROM AcademicAffairs m WHERE m.fullName = :fullName"),
+        @NamedQuery(name = "AcademicAffairs.findByEmail", query = "SELECT m FROM AcademicAffairs m WHERE m.email = :email"),
+        @NamedQuery(name = "AcademicAffairs.findByPhone", query = "SELECT m FROM AcademicAffairs m WHERE m.phone = :phone")})
 public class AcademicAffairs implements Serializable {
 
     private static final long serialVersionUID = 1L;
