@@ -27,9 +27,9 @@ public class LoginSuccessHandlerCustom implements AuthenticationSuccessHandler {
         httpServletRequest.getSession().setAttribute("currentUser", user);
 
         if (Objects.equals(roleName, SystemConstant.ROLE_ADMIN) || Objects.equals(roleName, SystemConstant.ROLE_MINISTRY) || Objects.equals(roleName, SystemConstant.ROLE_LECTURER)) {
-            httpServletResponse.sendRedirect("/GraduationThesisManagementSystem/admin/");
+            httpServletResponse.sendRedirect("/GraduationThesisManagement/admin/");
         } else {
-            httpServletResponse.sendRedirect("/GraduationThesisManagementSystem/");
+            httpServletResponse.sendRedirect("/GraduationThesisManagement/");
         }
     }
 }
