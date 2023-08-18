@@ -15,15 +15,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author bkhuy
  */
 @Entity
-@Table(name = "academic_affairs")
+@Table(name = "manage")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "AcademicAffairs.findAll", query = "SELECT m FROM AcademicAffairs m"),
-        @NamedQuery(name = "AcademicAffairs.findById", query = "SELECT m FROM AcademicAffairs m WHERE m.id = :id"),
-        @NamedQuery(name = "AcademicAffairs.findByFullName", query = "SELECT m FROM AcademicAffairs m WHERE m.fullName = :fullName"),
-        @NamedQuery(name = "AcademicAffairs.findByEmail", query = "SELECT m FROM AcademicAffairs m WHERE m.email = :email"),
-        @NamedQuery(name = "AcademicAffairs.findByPhone", query = "SELECT m FROM AcademicAffairs m WHERE m.phone = :phone")})
-public class AcademicAffairs implements Serializable {
+        @NamedQuery(name = "Manage.findAll", query = "SELECT m FROM Manage m"),
+        @NamedQuery(name = "Manage.findById", query = "SELECT m FROM Manage m WHERE m.id = :id"),
+        @NamedQuery(name = "Manage.findByFullName", query = "SELECT m FROM Manage m WHERE m.fullName = :fullName"),
+        @NamedQuery(name = "Manage.findByEmail", query = "SELECT m FROM Manage m WHERE m.email = :email"),
+        @NamedQuery(name = "Manage.findByPhone", query = "SELECT m FROM Manage m WHERE m.phone = :phone")})
+public class Manage implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,14 +57,14 @@ public class AcademicAffairs implements Serializable {
     @Valid
     private User user;
 
-    public AcademicAffairs() {
+    public Manage() {
     }
 
-    public AcademicAffairs(Integer id) {
+    public Manage(Integer id) {
         this.id = id;
     }
 
-    public AcademicAffairs(Integer id, String fullName, String email, String phone) {
+    public Manage(Integer id, String fullName, String email, String phone) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -121,10 +121,10 @@ public class AcademicAffairs implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AcademicAffairs)) {
+        if (!(object instanceof Manage)) {
             return false;
         }
-        AcademicAffairs other = (AcademicAffairs) object;
+        Manage other = (Manage) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

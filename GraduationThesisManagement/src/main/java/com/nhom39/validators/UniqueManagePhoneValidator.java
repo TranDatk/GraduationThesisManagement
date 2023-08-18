@@ -1,14 +1,14 @@
 package com.nhom39.validators;
 
-import com.nhom39.pojo.AcademicAffairs;
-import com.nhom39.service.AcademicAffairsService;
+import com.nhom39.pojo.Manage;
+import com.nhom39.service.ManageService;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class UniqueManagePhoneValidator implements Validator {
-    private final AcademicAffairsService manageService;
+    private final ManageService manageService;
 
-    public UniqueManagePhoneValidator(AcademicAffairsService manageService) {
+    public UniqueManagePhoneValidator(ManageService manageService) {
         this.manageService = manageService;
     }
 
@@ -19,10 +19,10 @@ public class UniqueManagePhoneValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        AcademicAffairs manage = (AcademicAffairs) target;
+        Manage manage = (Manage) target;
 
         if (manage.getId() == null
-                && this.manageService.checkUniqueAcademicAffairsPhone(manage.getPhone())) {
+                && this.manageService.checkUniqueManagePhone(manage.getPhone())) {
             errors.rejectValue("phone", "manage.add.phone.existsMessage",
                     "Số điện thoại quản trị viên đã tồn tại");
         }

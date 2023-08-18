@@ -16,6 +16,6 @@ public class LogoutSuccessHandlerCustom implements LogoutSuccessHandler {
         if (httpServletRequest.getSession().getAttribute("currentUser") != null)
             httpServletRequest.getSession().removeAttribute("currentUser");
 
-        httpServletResponse.sendRedirect("/GraduationThesisManagementSystem/login");
+        httpServletResponse.sendRedirect("/GraduationThesisManagement/login");
     }
 }

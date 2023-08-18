@@ -71,7 +71,7 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user")
     private Lecturer lecturer;
     @OneToOne(mappedBy = "user")
-    private AcademicAffairs manage;
+    private Manage manage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private Set<NotificationUser> notificationUsers;
@@ -172,11 +172,11 @@ public class User implements Serializable {
         this.lecturer = lecturer;
     }
 
-    public AcademicAffairs getManage() {
+    public Manage getManage() {
         return manage;
     }
 
-    public void setManage(AcademicAffairs manage) {
+    public void setManage(Manage manage) {
         this.manage = manage;
     }
 

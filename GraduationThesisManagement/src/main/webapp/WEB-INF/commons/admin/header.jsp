@@ -9,6 +9,7 @@
 <c:url var="langVi" value="/api/lang/?lang=vi"/>
 <c:url var="langEn" value="/api/lang/?lang=en"/>
 <c:url var="chat" value="/admin/chats/"/>
+<c:url var="profile" value="/admin/profile"/>
 <c:set value="${pageContext.response.locale.language}" var="lang"/>
 
 
@@ -127,7 +128,7 @@
                         <span class="user-name">${currentUser.username}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i>
+                        <a class="dropdown-item" href="${profile}"><i class="dw dw-user1"></i>
                             <spring:message code="layout.account.profile.label"/>
                         </a>
                         <a onclick="changePasswordByUser('${appContext}', ${currentUser.id})"

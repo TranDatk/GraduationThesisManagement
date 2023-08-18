@@ -70,11 +70,11 @@
             </div>
             <div class="profile-skills">
                 <h5 class="mb-20 h5 text-blue"><spring:message code="councilDetail.members.title"/></h5>
-                <h6 class="mb-5 font-14">Bùi Khánh Huy
+                <h6 class="mb-5 font-14">Trần Nhật Minh Đạt
                     <span class="text-black font-weight-normal">(Chủ tịch)</span></h6>
                 <h6 class="mb-5 font-14">Trần Văn A
                     <span class="text-black font-weight-normal">(Thư ký)</span></h6>
-                <h6 class="mb-5 font-14">Bùi Khánh Huy
+                <h6 class="mb-5 font-14">Cáp Tấn Đạt
                     <span class="text-black font-weight-normal">(Phản biện)</span></h6>
             </div>
         </div>

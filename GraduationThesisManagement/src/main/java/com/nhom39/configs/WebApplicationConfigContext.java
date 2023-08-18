@@ -47,7 +47,7 @@ public class WebApplicationConfigContext implements WebMvcConfigurer {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private AcademicAffairsService academicAffairsService;
+    private ManageService manageAffairsService;
     @Autowired
     private TopicService topicService;
     @Autowired
@@ -196,8 +196,8 @@ public class WebApplicationConfigContext implements WebMvcConfigurer {
     @Bean
     public WebAppValidator manageValidator() {
         Set<Validator> springValidators = new HashSet<>();
-        springValidators.add(new UniqueManageEmailValidator(academicAffairsService));
-        springValidators.add(new UniqueManagePhoneValidator(academicAffairsService));
+        springValidators.add(new UniqueManageEmailValidator(manageAffairsService));
+        springValidators.add(new UniqueManagePhoneValidator(manageAffairsService));
 
         WebAppValidator webAppValidator = new WebAppValidator();
         webAppValidator.setValidators(springValidators);

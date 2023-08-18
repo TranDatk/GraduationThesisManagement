@@ -1,8 +1,8 @@
 package com.nhom39.api.admin;
 
-import com.nhom39.pojo.AcademicAffairs;
+import com.nhom39.pojo.Manage;
 import com.nhom39.pojo.Topic;
-import com.nhom39.service.AcademicAffairsService;
+import com.nhom39.service.ManageService;
 import com.nhom39.validators.WebAppValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController(value = "AdminApiManageController")
 @Validated
 @RequestMapping(path = "/admin/api")
-public class ApiAcademicAffairsController {
-
+public class ApiManageController {
     @Autowired
-    private AcademicAffairsService manageService;
+    private ManageService manageService;
     @Autowired
     private WebAppValidator manageValidator;
     @Autowired
@@ -39,9 +37,9 @@ public class ApiAcademicAffairsController {
     }
 
     @GetMapping(path = "/manages/{manageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<AcademicAffairs> loadManage(@PathVariable(value = "manageId") int manageId) {
+    public ResponseEntity<Manage> loadManage(@PathVariable(value = "manageId") int manageId) {
         try {
-            AcademicAffairs manage = this.manageService.getAcademicAffairsById(manageId);
+            Manage manage = this.manageService.getManageById(manageId);
             return new ResponseEntity<>(manage, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,32 +50,16 @@ public class ApiAcademicAffairsController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Map<String, String>> addManage(@RequestPart(value = "avatarFile", required = false) MultipartFile file,
-            @RequestPart("manage") @Valid AcademicAffairs manage, BindingResult result) {
+                                                         @RequestPart("manage") @Valid Manage manage, BindingResult result) {
         Map<String, String> errorMessages = new HashMap<>();
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
-            if (this.manageService.addAcademicAffairs(manage, file)) {
-                status = HttpStatus.CREATED;
-            } else {
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
+            if (this.manageService.addManage(manage, file)) status = HttpStatus.CREATED;
+            else status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<>(errorMessages, status);
@@ -87,34 +69,18 @@ public class ApiAcademicAffairsController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Map<String, String>> updateManage(@PathVariable("manageId") int manageId,
-            @RequestPart(value = "avatarFile", required = false) MultipartFile file,
-            @Valid @RequestPart("manage") AcademicAffairs manage,
-            BindingResult result) {
+                                                            @RequestPart(value = "avatarFile", required = false) MultipartFile file,
+                                                            @Valid @RequestPart("manage") Manage manage,
+                                                            BindingResult result) {
         Map<String, String> errorMessages = new HashMap<>();
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
-            if (this.manageService.updateAcademicAffairs(manageId, manage, file)) {
-                status = HttpStatus.OK;
-            } else {
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
+            if (this.manageService.updateManage(manageId, manage, file)) status = HttpStatus.OK;
+            else status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<>(errorMessages, status);
@@ -123,6 +89,6 @@ public class ApiAcademicAffairsController {
     @DeleteMapping(path = "/manages/{manageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteManage(@PathVariable("manageId") int manageId) {
-        this.manageService.deleteAcademicAffairs(manageId);
+        this.manageService.deleteManage(manageId);
     }
 }

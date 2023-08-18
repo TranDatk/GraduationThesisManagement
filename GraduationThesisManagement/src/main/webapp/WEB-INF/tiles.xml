@@ -292,6 +292,19 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         </put-list-attribute>
     </definition>
     <!--    chat-->
+    
+     <!--    profile-->
+    <definition name="adminAccount" extends="adminBaseLayout">
+        <put-attribute name="title" value="Profile"/>
+        <put-attribute name="content" value="/WEB-INF/views/admin/profile.jsp"/>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/public/admin/src/scripts/chat.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="javascriptsModule">
+            <add-attribute value="/public/common/js/chat/chat.js"/>
+        </put-list-attribute>
+    </definition>
+    <!--    profile-->
 
     <!--    score statistics-->
     <definition name="adminScoreStatistics" extends="adminBaseLayout">
