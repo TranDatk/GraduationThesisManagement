@@ -2,7 +2,8 @@
 
 
 
-![Class Diagram0](https://github.com/TranDatk/GraduationThesisManagement/assets/84312661/d6db16df-217e-452a-a8d1-4dde36d47f99)
+![Class Diagram0](https://github.com/TranDatk/GraduationThesisManagement/assets/84312661/354ec2da-f7b3-4e48-8300-efea7d64fdde)
+
 
 ##
 
