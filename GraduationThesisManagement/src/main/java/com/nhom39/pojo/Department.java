@@ -172,7 +172,7 @@ public class Department implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Department[ id=" + id + " ]";
+        return "com.nhom39.pojo.Department[ id=" + id + " ]";
     }
     
 }

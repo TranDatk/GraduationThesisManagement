@@ -172,7 +172,7 @@ public class Major implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Major[ id=" + id + " ]";
+        return "com.nhom39.pojo.Major[ id=" + id + " ]";
     }
     
 }

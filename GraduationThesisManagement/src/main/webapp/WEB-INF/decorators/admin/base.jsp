@@ -39,9 +39,6 @@
     <%--    toast--%>
     <link rel="stylesheet" href="<c:url value="/public/admin/src/plugins/toast/jquery.toast.css"/>">
 
-    <%--    overlay loading--%>
-    <link href="<c:url value="/public/common/css/overlay/overlay-style.css"/> " rel="stylesheet">
-
     <c:forEach var="css" items="${stylesheets}">
         <link rel="stylesheet" type="text/css" href="${css}">
     </c:forEach>
@@ -64,28 +61,11 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<div id="cover-spin"></div>
-<%--<div class="pre-loader">--%>
-<%--    <div class="pre-loader-box">--%>
-<%--        <div class="loader-logo"><img src="vendors/images/deskapp-logo.svg" alt=""></div>--%>
-<%--        <div class='loader-progress' id="progress_div">--%>
-<%--            <div class='bar' id='bar1'></div>--%>
-<%--        </div>--%>
-<%--        <div class='percent' id='percent1'>0%</div>--%>
-<%--        <div class="loading-text">--%>
-<%--            Loading...--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
 
 <tiles:insertAttribute name="header"/>
 
-<tiles:insertAttribute name="rightSidebar"/>
-
 <tiles:insertAttribute name="leftSidebar"/>
-
-<div class="mobile-menu-overlay"></div>
 
 <div class="main-container" id="main-content">
     <div class="pd-ltr-20">

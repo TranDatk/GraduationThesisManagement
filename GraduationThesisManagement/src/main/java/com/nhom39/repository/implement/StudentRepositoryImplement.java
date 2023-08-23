@@ -25,6 +25,7 @@ import java.util.Map;
 @Repository
 @Transactional
 public class StudentRepositoryImplement implements StudentRepository {
+
     @Autowired
     private LocalSessionFactoryBean sessionFactoryBean;
     @Autowired
@@ -40,7 +41,7 @@ public class StudentRepositoryImplement implements StudentRepository {
         Query query = session.createQuery(sql);
         query.setParameter("code", studentCode.trim());
 
-        return (long)query.getSingleResult() > 0;
+        return (long) query.getSingleResult() > 0;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class StudentRepositoryImplement implements StudentRepository {
         Query query = session.createQuery(sql);
         query.setParameter("email", studentEmail.trim());
 
-        return (long)query.getSingleResult() > 0;
+        return (long) query.getSingleResult() > 0;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class StudentRepositoryImplement implements StudentRepository {
         Query query = session.createQuery(sql);
         query.setParameter("phone", studentPhone.trim());
 
-        return (long)query.getSingleResult() > 0;
+        return (long) query.getSingleResult() > 0;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class StudentRepositoryImplement implements StudentRepository {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
         Root<Student> root = query.from(Student.class);
-        query.multiselect(root.get("id"), root.get("fullName"));
+        query.select(builder.construct(Object[].class, root.get("id"), root.get("fullName")));
 
         return session.createQuery(query).getResultList();
     }
@@ -122,7 +123,9 @@ public class StudentRepositoryImplement implements StudentRepository {
 
         int page = 1;
         int pageSize = SystemConstant.PAGE_SIZE;
-        if (params.containsKey("page") && !params.get("page").isEmpty()) page = Integer.parseInt(params.get("page"));
+        if (params.containsKey("page") && !params.get("page").isEmpty()) {
+            page = Integer.parseInt(params.get("page"));
+        }
 
         int startPage = (page - 1) * pageSize;
         q.setMaxResults(pageSize);
@@ -183,7 +186,7 @@ public class StudentRepositoryImplement implements StudentRepository {
     public long countAllStudent() {
         Session session = this.sessionFactoryBean.getObject().getCurrentSession();
         try {
-           String sql = "SELECT COUNT(id) FROM Student";
+            String sql = "SELECT COUNT(id) FROM Student";
 
             return (long) session.createQuery(sql).getSingleResult();
         } catch (Exception ex) {
@@ -245,8 +248,9 @@ public class StudentRepositoryImplement implements StudentRepository {
 
             User objUser = session.get(User.class, objStudent.getUser().getId());
             objUser.setUsername(student.getUser().getUsername());
-            if (student.getUser().getAvatar() != null)
+            if (student.getUser().getAvatar() != null) {
                 objUser.setAvatar(student.getUser().getAvatar());
+            }
             objUser.setActive(student.getUser().getActive());
 
             session.update(objUser);

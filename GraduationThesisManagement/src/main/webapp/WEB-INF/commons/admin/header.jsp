@@ -6,31 +6,18 @@
 <c:url value="/public/common/images/avatars/avatar-default.jpg" var="avatarDefault"/>
 <c:url var="logout" value="/logout"/>
 <c:url var="appContext" value="/"/>
-<c:url var="langVi" value="/api/lang/?lang=vi"/>
-<c:url var="langEn" value="/api/lang/?lang=en"/>
-<c:url var="chat" value="/admin/chats/"/>
 <c:url var="profile" value="/admin/profile"/>
-<c:set value="${pageContext.response.locale.language}" var="lang"/>
-
 
 <div class="header">
     <div class="header-left">
         <div class="menu-icon dw dw-menu"></div>
     </div>
     <div class="header-right">
-        <div class="dashboard-setting user-notification">
-            <div class="dropdown">
-                <a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
-                    <i class="dw dw-settings2"></i>
-                </a>
-            </div>
-        </div>
+     
         <sec:authorize access="isAuthenticated()">
             <div class="user-notification">
                 <div class="dropdown">
-                    <a class="no-arrow" href="${chat}" role="button" >
-                        <i class="icon-copy dw dw-chat font-20"></i>
-                    </a>
+                 
                     <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
                         <i class="icon-copy dw dw-notification"></i>
                         <c:if test="${notificationUsers.size() > 0}">
@@ -69,48 +56,6 @@
                                 </c:if>
                             </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-info-dropdown">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" style="margin-top: 12px;" href="#" role="button" data-toggle="dropdown">
-                        <c:if test="${lang == 'vi'}">
-                            <span>
-                                <img width="24" src="<c:url value="/public/common/images/flag/vietnam.png"/>"
-                                     alt="Vietnam"/>
-                             </span>
-                        </c:if>
-                        <c:if test="${lang == 'en'}">
-                            <span>
-                                <img width="24" src="<c:url value="/public/common/images/flag/united-kingdom.png"/>"
-                                     alt="English"/>
-                             </span>
-                        </c:if>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list lang">
-                        <a class="dropdown-item pl-4 align-middle" href="javascript:;"
-                           onclick="changeLang('${appContext}', 'vi')">
-                            <div>
-                                <img width="24" src="<c:url value="/public/common/images/flag/vietnam.png"/>"
-                                     alt="Vietnam"/>
-                                Vietnamese
-                                <c:if test="${lang == 'vi'}">
-                                    <i class="fa fa-check text-success" style="margin-left: 135px;"></i>
-                                </c:if>
-                            </div>
-                        </a>
-                        <a class="dropdown-item pl-4 align-middle" href="javascript:;"
-                           onclick="changeLang('${appContext}', 'en')">
-                            <div>
-                                <img width="24" src="<c:url value="/public/common/images/flag/united-kingdom.png"/>"
-                                     alt="English"/>
-                                English
-                                <c:if test="${lang == 'en'}">
-                                    <i class="fa fa-check text-success" style="margin-left: 135px;"></i>
-                                </c:if>
-                            </div>
-                        </a>
                     </div>
                 </div>
             </div>

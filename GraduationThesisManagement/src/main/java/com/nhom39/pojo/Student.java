@@ -239,7 +239,7 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Student[ id=" + id + " ]";
+        return "com.nhom39.pojo.Student[ id=" + id + " ]";
     }
 
 }

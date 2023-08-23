@@ -1,6 +1,10 @@
 package com.nhom39.api.admin;
 
+import com.nhom39.constants.SystemConstant;
+import com.nhom39.pojo.Lecturer;
 import com.nhom39.pojo.Thesis;
+import com.nhom39.service.EmailService;
+import com.nhom39.service.LecturerService;
 import com.nhom39.service.ThesisService;
 import com.nhom39.validators.WebAppValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController(value = "AdminApiThesisController")
@@ -30,6 +33,10 @@ public class ApiThesisController {
     private ThesisService thesisService;
     @Autowired
     private WebAppValidator thesisValidator;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private LecturerService lecturerService;
 
     @InitBinder
     public void InitBinder(WebDataBinder binder) {
@@ -60,20 +67,7 @@ public class ApiThesisController {
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
             if (this.thesisService.addThesis(thesis)) {
@@ -92,20 +86,7 @@ public class ApiThesisController {
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
 //            if (this.departmentService.updateDepartment(departmentId, department))
@@ -123,4 +104,7 @@ public class ApiThesisController {
     public void deleteThesis(@PathVariable("thesisId") int thesisId) {
         this.thesisService.deleteThesis(thesisId);
     }
+
+
+
 }

@@ -369,6 +369,7 @@
                                     class="text-danger">(*)</span></label>
                             <select name="students" id="students"
                                     class="custom-select2 form-control" multiple="multiple" style="width: 100%;">
+                                
                             </select>
                         </div>
                         <div class="form-group">

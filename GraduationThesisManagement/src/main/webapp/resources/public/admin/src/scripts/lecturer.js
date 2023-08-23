@@ -1,17 +1,3 @@
-const fileUploader = document.getElementById("file");
-var file = null;
-
-fileUploader.addEventListener("change", (event) => {
-    file = event.target.files[0];
-
-    let fileOutput = document.getElementById("file-output");
-
-    fileOutput.src = URL.createObjectURL(file);
-    fileOutput.onload = function () {
-        URL.revokeObjectURL(fileOutput.src);
-    };
-});
-
 
 const loadLecturerById = (endpoint, callback) => {
     fetch(endpoint, {
@@ -335,48 +321,4 @@ const changePassword = (appContext, userId) => {
             successfulAlert("Đổi mật khẩu thành công", "Ok", null);
         }
     });
-};
-
-// add students from file
-const importLecturersFile = async (appContext) => {
-    document.getElementById("btn-import").onclick = () => {
-        $("input").next("span").remove();
-        var file = document.forms["form-upload-file"]["file"].files[0];
-
-        showLoading();
-        if (file) {
-            var formData = new FormData();
-            formData.append("file", file);
-
-            return fetch(`${appContext}admin/api/lecturers/file`, {
-                method: "POST",
-                body: formData,
-            })
-                .then((response) => {
-                    $("#modal-add-import-lecturer").hide();
-                    if (!response.ok) {
-                        errorAlert(
-                            "Đã có lỗi",
-                            "Import danh sách giảng viên không thành công. \nKiểm tra lại dữ liệu và thực hiện lại.",
-                            "Ok"
-                        );
-                    } else {
-                        successfulAlert(
-                            "Import danh sách giảng viên thành công.",
-                            "Ok",
-                            () => location.reload()
-                        );
-                    }
-                })
-                .finally(hideLoading);
-        } else {
-            $("input[name=file]").after(
-                '<span class="text-danger">Không được để trống</span>'
-            );
-
-            hideLoading();
-        }
-    };
-
-    $("#modal-add-import-lecturer").modal();
 };

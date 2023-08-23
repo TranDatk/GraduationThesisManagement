@@ -8,7 +8,6 @@
 <c:url var="logout" value="/logout"/>
 <c:url var="home" value="/"/>
 <c:url var="news" value="/news"/>
-<c:url var="chat" value="/chat"/>
 <c:set value="${pageContext.response.locale.language}" var="lang"/>
 
 <!-- Navbar -->
@@ -54,11 +53,6 @@
         <!-- Collapsible wrapper -->
         <!-- Right elements -->
         <div class="d-flex align-items-center">
-            <div class="pe-4">
-                <a href="${chat}" style="color: #4f4f4f;">
-                    <i class="fas fa-comment" style="font-size: 24px;"></i>
-                </a>
-            </div>
             <!-- Notifications -->
             <div class="dropdown">
                 <a class="text-reset me-3 dropdown-toggle hidden-arrow"

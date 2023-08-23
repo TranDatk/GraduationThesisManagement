@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
   font-family: 'dropways';
   src: url("../fonts/dropways.eot?jm47o8");
   src: url("../fonts/dropways.eot?jm47o8#iefix") format("embedded-opentype"), url("../fonts/dropways.ttf?jm47o8") format("truetype"), url("../fonts/dropways.woff?jm47o8") format("woff"), url("../fonts/dropways.svg?jm47o8#dropways") format("svg");
@@ -7,7 +7,7 @@
   font-display: block; }
 
 .dw {
-  /* use !important to prevent issues with browser extensions that change fonts */
+   use !important to prevent issues with browser extensions that change fonts 
   font-family: 'dropways' !important;
   speak: none;
   font-style: normal;
@@ -15,7 +15,7 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
+   Better Font Rendering =========== 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -4159,12 +4159,12 @@
 .dw-add:before {
   content: "\ee38"; }
 
-/*!
+!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
-/* FONT PATH
- * -------------------------- */
+ 
+ FONT PATH
+ * -------------------------- 
 @font-face {
   font-family: 'FontAwesome';
   src: url("../fonts/fontawesome-webfont.eot?v=4.7.0");
@@ -4180,7 +4180,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-/* makes the font 33% larger relative to the icon container */
+ makes the font 33% larger relative to the icon container 
 .fa-lg {
   font-size: 1.33333333em;
   line-height: 0.75em;
@@ -4237,7 +4237,7 @@
 .fa.fa-pull-right {
   margin-left: .3em; }
 
-/* Deprecated as of 4.4.0 */
+ Deprecated as of 4.4.0 
 .pull-right {
   float: right; }
 
@@ -4331,8 +4331,8 @@
 .fa-inverse {
   color: #ffffff; }
 
-/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
-   readers do not read off random characters that represent icons */
+ Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+   readers do not read off random characters that represent icons 
 .fa-glass:before {
   content: "\f000"; }
 
@@ -6488,11 +6488,11 @@
   overflow: visible;
   clip: auto; }
 
-/*
+
  * Foundation Icons v 3.0
  * Made by ZURB 2013 http://zurb.com/playground/foundation-icon-fonts-3
  * MIT License
- */
+ 
 @font-face {
   font-family: "foundation-icons";
   src: url("../fonts/foundation-icons.eot");
@@ -7643,7 +7643,7 @@
   content: "\f21a"; }
 
 @charset "UTF-8";
-/*!
+!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
   https://twitter.com/benjsperry  https://twitter.com/ionicframework
@@ -7653,7 +7653,7 @@
   Material Design Icons: https://github.com/google/material-design-icons
   used under CC BY http://creativecommons.org/licenses/by/4.0/
   Modified icons to fit ionicon’s grid from original.
-*/
+
 @font-face {
   font-family: "Ionicons";
   src: url("../fonts/ionicons.eot?v=2.0.1");
@@ -9888,7 +9888,7 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
+   Better Font Rendering =========== 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -10946,4 +10946,4 @@
   content: "\e75e"; }
 
 .ti-rss-alt:before {
-  content: "\e75f"; }
+  content: "\e75f"; }*/

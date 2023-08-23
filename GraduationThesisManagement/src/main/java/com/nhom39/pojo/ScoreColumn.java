@@ -129,7 +129,7 @@ public class ScoreColumn implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.ScoreColumn[ id=" + id + " ]";
+        return "com.nhom39.pojo.ScoreColumn[ id=" + id + " ]";
     }
     
 }

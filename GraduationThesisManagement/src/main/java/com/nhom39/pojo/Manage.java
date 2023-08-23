@@ -133,7 +133,7 @@ public class Manage implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Manage[ id=" + id + " ]";
+        return "com.nhom39.pojo.Manage[ id=" + id + " ]";
     }
 
 }

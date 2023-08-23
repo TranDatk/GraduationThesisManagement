@@ -44,7 +44,7 @@
 </head>
 
 <body>
-<div id="cover-spin"></div>
+
 <div id="loading-area"></div>
 
 <tiles:insertAttribute name="header"/>

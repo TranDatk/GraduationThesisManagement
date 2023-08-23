@@ -261,7 +261,7 @@ public class Lecturer implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Lecturer[ id=" + id + " ]";
+        return "com.nhom39.pojo.Lecturer[ id=" + id + " ]";
     }
 
 }

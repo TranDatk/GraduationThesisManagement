@@ -6,7 +6,7 @@ var council;
 const loadDataOptions = (callback) => {
     if (isLoadDataOptions) {
         fetch(
-            "/GraduationThesisManagementSystem/admin/api/thesis-options/?isCouncil=False",
+            "/GraduationThesisManagement/admin/api/thesis-options/?isCouncil=False",
             {
                 method: "GET",
                 headers: {
@@ -25,7 +25,7 @@ const loadDataOptions = (callback) => {
             })
             .then(() =>
                 fetch(
-                    "/GraduationThesisManagementSystem/admin/api/lecturer-options/?isMinistry=False",
+                    "/GraduationThesisManagement/admin/api/lecturer-options/?isMinistry=False",
                     {
                         method: "GET",
                         headers: {

@@ -123,7 +123,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Role[ id=" + id + " ]";
+        return "com.nhom39.pojo.Role[ id=" + id + " ]";
     }
     
 }

@@ -119,7 +119,7 @@ public class EvaluationMethod implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.EvaluationMethod[ id=" + id + " ]";
+        return "com.nhom39.pojo.EvaluationMethod[ id=" + id + " ]";
     }
     
 }

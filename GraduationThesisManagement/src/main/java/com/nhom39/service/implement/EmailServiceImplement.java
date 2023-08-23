@@ -1,7 +1,6 @@
 package com.nhom39.service.implement;
 
 import com.nhom39.constants.SystemConstant;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,7 +41,7 @@ public class EmailServiceImplement implements EmailService {
         }
     }
 
-    private MimeMessagePreparator getMessagePreparator(final String subject, final String[] to, final Map<String, Object> model, final int type) {
+    private MimeMessagePreparator getMessagePreparator(String subject, String[] to, Map<String, Object> model, int type) {
 
         return new MimeMessagePreparator() {
 

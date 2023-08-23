@@ -1,17 +1,3 @@
-const fileUploader = document.getElementById("file");
-var file = null;
-
-fileUploader.addEventListener("change", (event) => {
-  file = event.target.files[0];
-
-  let fileOutput = document.getElementById("file-output");
-
-  fileOutput.src = URL.createObjectURL(file);
-  fileOutput.onload = function () {
-    URL.revokeObjectURL(fileOutput.src);
-  };
-});
-
 
 const loadStudentById = (endpoint, callback) => {
     fetch(endpoint, {
@@ -294,97 +280,56 @@ $("#modal-add-import-student").on("hidden.bs.modal", function (e) {
 });
 
 // change password
-const changePassword = (appContext, userId) => {
-  Swal.fire({
-    title: "Đổi mật khẩu",
-    input: "password",
-    inputAttributes: {
-      autocapitalize: "off",
-    },
-    showCancelButton: true,
-    confirmButtonText: "Đổi mật khẩu",
-    confirmButtonColor: "#218838",
-    reverseButtons: true,
-    showLoaderOnConfirm: true,
-    cancelButtonText: "Hủy",
-    preConfirm: (password) => {
-      if (!password) {
-        Swal.showValidationMessage("Mật khẩu không được để trống");
-      } else {
-        if (password.toString().length > 50) {
-          Swal.showValidationMessage("Mật khẩu không vượt quá 50 ký tự");
-        } else {
-          console.log(password);
-          return fetch(`${appContext}admin/api/users/${userId}`, {
-            method: "POST",
-            body: JSON.parse(password),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                return Promise.reject(response.statusText);
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              errorAlert("Đã có lỗi", "Đổi mật khẩu không thành công!", "Ok");
-            });
+const changePassword = async (appContext, userId) => {
+  try {
+    const { value: password, isConfirmed } = await Swal.fire({
+      title: "Đổi mật khẩu",
+      input: "password",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      showCancelButton: true,
+      confirmButtonText: "Đổi mật khẩu",
+      confirmButtonColor: "#218838",
+      reverseButtons: true,
+      showLoaderOnConfirm: true,
+      cancelButtonText: "Hủy",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Mật khẩu không được để trống";
         }
-      }
-    },
-    allowOutsideClick: () => !Swal.isLoading(),
-  }).then((result) => {
-    if (result.isConfirmed) {
-      successfulAlert("Đổi mật khẩu thành công", "Ok", null);
-    }
-  });
-};
+        if (value.length > 50) {
+          return "Mật khẩu không vượt quá 50 ký tự";
+        }
+        return null;
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
 
-// add students from file
-const importStudentsFile = async (appContext) => {
-  document.getElementById("btn-import").onclick = () => {
-    $("input").next("span").remove();
-    var file = document.forms["form-upload-file"]["file"].files[0];
-
-    showLoading();
-    if (file) {
-      console.log("TRUE");
-      var formData = new FormData();
-      formData.append("file", file);
-
-      return fetch(`${appContext}admin/api/students/file`, {
+    if (password && isConfirmed) {
+      const response = await fetch(`${appContext}admin/api/users/${userId}`, {
         method: "POST",
-        body: formData,
-      })
-        .then((response) => {
-          $("#modal-add-import-student").hide();
-          if (!response.ok) {
-            errorAlert(
-              "Đã có lỗi",
-              "Import danh sách sinh viên không thành công. \nKiểm tra lại dữ liệu và thực hiện lại.",
-              "Ok"
-            );
-          } else {
-            successfulAlert(
-              "Import danh sách sinh viên thành công.",
-              "Ok",
-              () => location.reload()
-            );
-          }
-        })
-        .finally(hideLoading);
-    } else {
-      $("input[name=file]").after(
-        '<span class="text-danger">Không được để trống</span>'
-      );
+        body: JSON.stringify({ password }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // You can add other headers like CSRF token here if needed
+        },
+      });
 
-      hideLoading();
+      if (response.ok) {
+        successfulAlert("Đổi mật khẩu thành công", "Ok", null);
+      } else {
+        const error = await response.text();
+        console.error(error);
+        errorAlert("Đã có lỗi", "Đổi mật khẩu không thành công!", "Ok");
+      }
     }
-  };
-
-  $("#modal-add-import-student").modal();
+  } catch (error) {
+    console.error(error);
+    errorAlert("Đã có lỗi", "Đổi mật khẩu không thành công!", "Ok");
+  }
 };
+
+
+

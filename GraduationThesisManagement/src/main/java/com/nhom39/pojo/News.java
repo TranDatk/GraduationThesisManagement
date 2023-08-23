@@ -144,7 +144,7 @@ public class News implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.News[ id=" + id + " ]";
+        return "com.nhom39.pojo.News[ id=" + id + " ]";
     }
     
 }

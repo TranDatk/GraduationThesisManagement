@@ -20,14 +20,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController(value = "AdminApiLecturerController")
 @Validated
 @RequestMapping(path = "/admin/api")
 public class ApiLecturerController {
-
     @Autowired
     private LecturerService lecturerService;
     @Autowired
@@ -59,46 +57,20 @@ public class ApiLecturerController {
         }
     }
 
-    @PostMapping(path = "/lecturers/file",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HttpStatus> addLecturerInFile(@RequestParam(value = "file") MultipartFile file) throws IOException {
-        if (this.lecturerService.addLecturer(this.readExcelService.getLecturersFromFile(file))) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
     @PostMapping(path = "/lecturers",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Map<String, String>> addLecturer(@RequestPart(value = "avatarFile", required = false) MultipartFile file,
-            @RequestPart("lecturer") @Valid Lecturer lecturer, BindingResult result) {
+                                                           @RequestPart("lecturer") @Valid Lecturer lecturer, BindingResult result) {
         Map<String, String> errorMessages = new HashMap<>();
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
-            if (this.lecturerService.addLecturer(lecturer, file)) {
-                status = HttpStatus.CREATED;
-            } else {
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
+            if (this.lecturerService.addLecturer(lecturer, file)) status = HttpStatus.CREATED;
+            else status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<>(errorMessages, status);
@@ -106,34 +78,18 @@ public class ApiLecturerController {
 
     @PostMapping(path = "/lecturers/{lecturerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Map<String, String>> updateLecturer(@PathVariable("lecturerId") int lecturerId,
-            @RequestPart(value = "avatarFile", required = false) MultipartFile file,
-            @RequestPart(value = "lecturer") @Valid Lecturer lecturer,
-            BindingResult result) {
+                                                              @RequestPart(value = "avatarFile", required = false) MultipartFile file,
+                                                              @RequestPart(value = "lecturer") @Valid Lecturer lecturer,
+                                                              BindingResult result) {
         Map<String, String> errorMessages = new HashMap<>();
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
-            if (this.lecturerService.updateLecturer(lecturerId, lecturer, file)) {
-                status = HttpStatus.OK;
-            } else {
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
+            if (this.lecturerService.updateLecturer(lecturerId, lecturer, file)) status = HttpStatus.OK;
+            else status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<>(errorMessages, status);

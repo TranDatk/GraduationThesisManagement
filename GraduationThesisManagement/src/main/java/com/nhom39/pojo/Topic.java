@@ -126,7 +126,7 @@ public class Topic implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Topic[ id=" + id + " ]";
+        return "com.nhom39.pojo.Topic[ id=" + id + " ]";
     }
     
 }

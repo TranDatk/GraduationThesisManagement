@@ -122,22 +122,6 @@ const turnOffNotification = (appContext, notificationUserId) => {
     });
 };
 
-const changeLang = (appContext, lang = "vi") => {
-  fetch(`${appContext}api/lang/?lang=${lang}`, {
-    method: "GET",
-  })
-    .then((res) => {
-      if (res.ok) {
-        console.log(res.ok);
-        location.reload();
-      } else {
-        Promise.reject("Error");
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
 
 document.addEventListener("DOMContentLoaded", () => {
   let notificationCreatedDate = document.getElementsByClassName(

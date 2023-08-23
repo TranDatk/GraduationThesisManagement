@@ -306,7 +306,7 @@ public class Thesis implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Thesis[ id=" + id + " ]";
+        return "com.nhom39.pojo.Thesis[ id=" + id + " ]";
     }
 
 }

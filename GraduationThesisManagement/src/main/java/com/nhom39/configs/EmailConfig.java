@@ -1,7 +1,9 @@
 package com.nhom39.configs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 import java.util.Properties;
+import javax.net.ssl.SSLContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +25,7 @@ public class EmailConfig {
     /*
      * Application configuration
      */
-    @Bean
+     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
@@ -58,5 +60,6 @@ public class EmailConfig {
         bean.setTemplateLoaderPaths("classpath:/mailtemplate/");
         return bean;
     }
+  
 }
 

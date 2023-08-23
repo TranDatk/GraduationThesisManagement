@@ -152,7 +152,7 @@ public class Council implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Council[ id=" + id + " ]";
+        return "com.nhom39.pojo.Council[ id=" + id + " ]";
     }
 
 }

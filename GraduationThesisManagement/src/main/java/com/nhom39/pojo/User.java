@@ -227,7 +227,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.User[ id=" + id + " ]";
+        return "com.nhom39.pojo.User[ id=" + id + " ]";
     }
 
 }

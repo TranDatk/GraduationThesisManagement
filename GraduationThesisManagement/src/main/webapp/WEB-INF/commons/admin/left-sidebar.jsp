@@ -28,7 +28,6 @@
 <c:url var="manage" value="/admin/manages/"/>
 <c:url var="news" value="/admin/news/"/>
 <c:url var="notification" value="/admin/notifications/"/>
-<c:url var="chat" value="/admin/chats/"/>
 <c:url var="scoreStatistics" value="/admin/stats/score-statistics/"/>
 <c:url var="frequencyStatistics" value="/admin/stats/frequency-statistics/"/>
 
@@ -205,13 +204,7 @@
                         </li>
                     </sec:authorize>
                 </sec:authorize>
-                <li>
-                    <a href="${chat}" class="dropdown-toggle no-arrow ${pagina.endsWith('/admin/chats/') ? 'active' : ''}">
-                        <span class="micon dw dw-chat3"></span><span class="mtext">
-                         <spring:message code="layout.leftSidebar.menu.label.chat"/>
-                    </span>
-                    </a>
-                </li>
+             
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>

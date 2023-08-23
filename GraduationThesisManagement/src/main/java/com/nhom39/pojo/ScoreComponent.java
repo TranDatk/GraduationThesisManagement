@@ -116,7 +116,7 @@ public class ScoreComponent implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.ScoreComponent[ id=" + id + " ]";
+        return "com.nhom39.pojo.ScoreComponent[ id=" + id + " ]";
     }
     
 }

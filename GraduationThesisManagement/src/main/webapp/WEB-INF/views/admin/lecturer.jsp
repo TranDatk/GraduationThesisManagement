@@ -116,10 +116,7 @@
             </h4>
         </div>
         <div class="pull-right">
-            <button onclick="importLecturersFile('${appContext}')"
-                    type="button" class="btn btn-success btn-md mr-1"><i class="micon icon-copy dw dw-upload1"></i>
-                Import File
-            </button>
+       
             <button onclick="showAddLecturerModal('${appContext}')"
                     type="button" class="btn btn-success btn-md"><i class="micon icon-copy dw dw-add"></i>
                 <spring:message code="lecturer.table.list.button.addLecturer.label"/>

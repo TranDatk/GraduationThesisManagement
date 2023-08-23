@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import javax.mail.MessagingException;
 
 @Controller(value = "AdminHomeController")
 @ControllerAdvice
 @RequestMapping(path = "/admin")
 @PropertySource("classpath:application.properties")
 public class HomeController {
+
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -37,7 +38,6 @@ public class HomeController {
 
     @Autowired
     private StatsService statsService;
-
 
     @ModelAttribute
     public void commonAttribute(Model model, HttpSession session) {
@@ -63,14 +63,17 @@ public class HomeController {
         return "adminIndex";
     }
 
-    @GetMapping(path = "/send-mail")
+     @GetMapping(path = "/send-mail")
     public String sendMail() {
         Thesis thesis = this.thesisService.getThesisById(23);
         Map<String, Object> model = new HashMap<>();
         model.put("thesis", thesis);
 
-        emailService.sendMail("Thông báo giảng viên phản biện khóa luận tốt nghiệp", new String[]{"khuy220@gmail.com", "1951050027huy@ou.edu.vn"}, model, SystemConstant.REVIEW_LECTURER_EMAIL_TEMPLATE);
+        emailService.sendMail("Thông báo giảng viên phản biện khóa luận tốt nghiệp", new String[]{"tandatk005@gmail.com", "2051052024dat@ou.edu.vn"}, model, SystemConstant.REVIEW_LECTURER_EMAIL_TEMPLATE);
 
         return "adminIndex";
     }
+    
+    
+
 }

@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController(value = "AdminApiStudentController")
@@ -35,6 +34,7 @@ public class ApiStudentController {
     @Autowired
     private WebAppValidator studentValidator;
 
+
     @InitBinder
     public void InitBinder(WebDataBinder binder) {
         binder.setValidator(studentValidator);
@@ -43,11 +43,13 @@ public class ApiStudentController {
     @GetMapping(path = "/student-options", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<Object[]>> loadStudentOptions() {
         try {
+          
             return new ResponseEntity<>(this.studentService.getStudentOptions(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping(path = "/students/{studentId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Student> loadStudent(@PathVariable(value = "studentId") int studentId) {
@@ -69,20 +71,7 @@ public class ApiStudentController {
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
             if (this.studentService.addStudent(student, file)) {
@@ -93,16 +82,6 @@ public class ApiStudentController {
         }
 
         return new ResponseEntity<>(errorMessages, status);
-    }
-
-    @PostMapping(path = "/students/file",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HttpStatus> addStudentInFile(@RequestParam(value = "file") MultipartFile file) throws IOException {
-        if (this.studentService.addStudent(this.readExcelService.getStudentsFromFile(file))) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(path = "/students/{studentId}",
@@ -116,20 +95,7 @@ public class ApiStudentController {
         HttpStatus status = null;
 
         if (result.hasErrors()) {
-            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getField();
-                }
-            },
-                    new Function<FieldError, String>() {
-                @Override
-                public String apply(FieldError fieldError) {
-                    return fieldError.getDefaultMessage();
-                }
-            }
-            ));
+            errorMessages = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             status = HttpStatus.BAD_REQUEST;
         } else {
             if (this.studentService.updateStudent(studentId, student, file)) {

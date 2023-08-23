@@ -169,7 +169,7 @@ public class SchoolYear implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.SchoolYear[ id=" + id + " ]";
+        return "com.nhom39.pojo.SchoolYear[ id=" + id + " ]";
     }
     
 }

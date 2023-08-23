@@ -143,7 +143,7 @@ public class Notification implements Serializable {
 
     @Override
     public String toString() {
-        return "com.buikhanhhuy.pojo.Notification[ id=" + id + " ]";
+        return "com.nhom39.pojo.Notification[ id=" + id + " ]";
     }
     
 }

@@ -39,23 +39,11 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content" value="/WEB-INF/views/auth/login.jsp"/>
         <put-attribute name="footer" value=""/>
     </definition>
-    <definition name="chat" extends="baseLayout">
-        <put-attribute name="title" value="Chat"/>
-        <put-attribute name="content" value="/WEB-INF/views/user/chat.jsp"/>
-        <put-attribute name="footer" value=""/>
-        <put-list-attribute name="javascripts">
-            <add-attribute value="/public/user/src/scripts/chat.js"/>
-        </put-list-attribute>
-        <put-list-attribute name="javascriptsModule">
-            <add-attribute value="/public/common/js/chat/chat.js"/>
-        </put-list-attribute>
-    </definition>
 
     <!--    ADMIN-->
     <definition name="adminBaseLayout" template="/WEB-INF/decorators/admin/base.jsp">
         <put-attribute name="title" value=""/>
         <put-attribute name="header" value="/WEB-INF/commons/admin/header.jsp"/>
-        <put-attribute name="rightSidebar" value="/WEB-INF/commons/admin/right-sidebar.jsp"/>
         <put-attribute name="leftSidebar" value="/WEB-INF/commons/admin/left-sidebar.jsp"/>
         <put-attribute name="content" value=""/>
         <put-attribute name="footer" value="/WEB-INF/commons/admin/footer.jsp"/>
@@ -280,28 +268,14 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
     </definition>
     <!--    news-->
 
-    <!--    chat-->
-    <definition name="adminChat" extends="adminBaseLayout">
-        <put-attribute name="title" value="Chat"/>
-        <put-attribute name="content" value="/WEB-INF/views/admin/chat.jsp"/>
-        <put-list-attribute name="javascripts">
-            <add-attribute value="/public/admin/src/scripts/chat.js"/>
-        </put-list-attribute>
-        <put-list-attribute name="javascriptsModule">
-            <add-attribute value="/public/common/js/chat/chat.js"/>
-        </put-list-attribute>
-    </definition>
-    <!--    chat-->
     
      <!--    profile-->
     <definition name="adminAccount" extends="adminBaseLayout">
         <put-attribute name="title" value="Profile"/>
         <put-attribute name="content" value="/WEB-INF/views/admin/profile.jsp"/>
         <put-list-attribute name="javascripts">
-            <add-attribute value="/public/admin/src/scripts/chat.js"/>
         </put-list-attribute>
         <put-list-attribute name="javascriptsModule">
-            <add-attribute value="/public/common/js/chat/chat.js"/>
         </put-list-attribute>
     </definition>
     <!--    profile-->
