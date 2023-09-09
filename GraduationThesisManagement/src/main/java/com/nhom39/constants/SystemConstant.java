@@ -5,8 +5,9 @@ public class SystemConstant {
     public static final int PAGE_SIZE = 10;
 
     // validator
-    public static final int MAX_NUMBER_OF_TEACHER_INSTRUCTIONS = 2;
-    public static final int MAXIMUM_NUMBER_OF_STUDENTS_PERFORMED = 2;
+    public static final int MAX_NUMBER_OF_TEACHER_INSTRUCTIONS = 2; // Số lượng giảng viên hướng dẫn tối đa
+    
+    public static final int MAXIMUM_NUMBER_OF_STUDENTS_PERFORMED = 2; // Số lượng sinh viên thực hiện 1 khóa luận tối đa
     public static final int MIN_NUMBER_MEMBER_OF_COUNCIL = 3;
     public static final int MAX_NUMBER_MEMBER_OF_COUNCIL = 5;
     public static final int MAX_THESIS_OF_COUNCIL = 5;

@@ -16,37 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `academic_affairs`
---
-
-DROP TABLE IF EXISTS `academic_affairs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `academic_affairs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `phone_UNIQUE` (`phone`),
-  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  CONSTRAINT `fk_manage_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `academic_affairs`
---
-
-LOCK TABLES `academic_affairs` WRITE;
-/*!40000 ALTER TABLE `academic_affairs` DISABLE KEYS */;
-INSERT INTO `academic_affairs` VALUES (26,'Bùi Khánh Huy','hethongquanlykhoaluan.hcmcou@gmail.com','0888425094',90);
-/*!40000 ALTER TABLE `academic_affairs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `council`
 --
 
@@ -259,6 +228,37 @@ LOCK TABLES `major` WRITE;
 /*!40000 ALTER TABLE `major` DISABLE KEYS */;
 INSERT INTO `major` VALUES (17,'MANGANH001','Quản trị kinh doanh DB','Mô tả ngành Quản trị kinh doanh',111),(18,'MANGANH002','Tài chính - Ngân hàng DB','Mô tả ngành Tài chính - Ngân hàng',111),(19,'MANGANH003','Kế toán DB','Mô tả ngành Kế toán ',111),(20,'MANGANH004','Công nghệ sinh học DB','Mô tả ngành Công nghệ sinh học',111),(21,'MANGANH005','CNKT Công trình xây dựng DB','Mô tả ngành CNKT Công trình xây dựng',111),(22,'MANGANH006','Luật kinh tế DB','Mô tả ngành Luật kinh tế',111),(23,'MANGANH007','Ngôn ngữ Anh DB','Mô tả ngành Ngôn ngữ Anh',111),(24,'MANGANH008','CNSH về công nghệ thực phẩm','Mô tả ngành CNSH về công nghệ thực phẩm',112),(25,'MANGANH009','CNSH về Nông nghiệp - Môi trường','Mô tả ngành CNSH về Nông nghiệp - Môi trường',112),(26,'MANGANH010','Công nghệ sinh học Y - Dược','Mô tả ngành Công nghệ sinh học Y - Dược',112),(27,'MANGANH011','Công nghệ thông tin','Mô tả ngành Công nghệ thông tin',113),(28,'MANGANH012','Hệ thống thông tin quản lý','Mô tả ngành Hệ thống thông tin quản lý',113),(29,'MANGANH013','Khoa học máy tính','Mô tả ngành Khoa học máy tính',113),(31,'MANGANH014','Kế toán','Mô tả ngành Kế toán',114),(32,'MANGANH015','Kiểm toán','Mô tả ngành Kiểm toán',114),(36,'MANGANH016','Kinh tế đầu tư','Mô tả ngành Kinh tế đầu tư',115),(37,'MANGANH017','Kinh tế quốc tế','Mô tả ngành Kinh tế quốc tế',115),(38,'MANGANH018','Kinh tế học','Mô tả ngành Kinh tế học\n',115),(39,'MANGANH019','Quản lý công','Mô tả ngành Quản lý công',115),(41,'MANGANH020','Luật kinh tế','Mô tả ngành Luật kinh tế',116),(42,'MANGANH021','Luật học ','Mô tả ngành Luật học ',116),(47,'MANGANH022','Ngôn ngữ Anh','Mô tả ngành Ngôn ngữ Anh',117),(48,'MANGANH023','Ngôn ngữ Trung Quốc','Mô tả ngành Ngôn ngữ Trung Quốc',117),(49,'MANGANH024','Ngôn ngữ Nhật','Mô tả ngành Ngôn ngữ Nhật',117),(50,'MANGANH025','Quản trị kinh doanh','Mô tả ngành Quản trị kinh doanh',118),(51,'MANGANH026','Kinh doanh quốc tế','Mô tả ngành Kinh doanh quốc tế',118),(52,'MANGANH027','Quản trị nhân sự','Mô tả ngành Quản trị nhân sự',118),(53,'MANGANH028','Marketing','Mô tả ngành Marketing',118),(54,'MANGANH029','Tài chính','Mô tả ngành Tài chính',119),(55,'MANGANH030','Ngân hàng','Mô tả ngành Ngân hàng',119),(56,'MANGANH031','Xã hội học','Mô tả ngành Xã hội học',120),(57,'MANGANH032','Công tác xã hội','Mô tả ngành Công tác xã hội',120),(58,'MANGANH033','Đông Nam Á học','Mô tả ngành Đông Nam Á học',120),(59,'MANGANH034','Công nghệ kỹ thuật công trình xây dựng ','Mô tả ngành Công nghệ kỹ thuật công trình xây dựng ',121),(60,'MANGANH035','Quản lý xây dựng','Mô tả ngành Quản lý xây dựng',121);
 /*!40000 ALTER TABLE `major` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `manage`
+--
+
+DROP TABLE IF EXISTS `manage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `manage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `phone_UNIQUE` (`phone`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  CONSTRAINT `fk_manage_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `manage`
+--
+
+LOCK TABLES `manage` WRITE;
+/*!40000 ALTER TABLE `manage` DISABLE KEYS */;
+INSERT INTO `manage` VALUES (26,'Bùi Khánh Huy','hethongquanlykhoaluan.hcmcou@gmail.com','0888425094',90);
+/*!40000 ALTER TABLE `manage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -726,4 +726,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-15 16:51:36
+-- Dump completed on 2023-09-04  8:39:03
